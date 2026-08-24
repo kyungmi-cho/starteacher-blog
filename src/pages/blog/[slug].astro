@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { catColor, catBg, catUrl } from '../../lib/categories'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft)
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post, posts } }))
+}
+
+const { post, posts } = Astro.props
+const { Content } = await post.render()
+const d = post.data
+
+const url = new URL(`/blog/${post.slug}`, Astro.site).href
+const canonical = d.canonicalUrl ?? url
+const fmt = (x: Date) =>
+  `${x.getFullYear()}.${String(x.getMonth() + 1).padStart(2, '0')}.${String(x.getDate()).padStart(2, '0')}`
+
+// 카테고리 고정 색상 + 원본 게시판 URL
+const cColor = catColor(d.category)
+const cBg = catBg(d.category)
+const originUrl = d.categoryUrl ?? catUrl(d.category)
+
+// 관련 글: 같은 카테고리, 본인 제외, 최신순 3개. 부족하면 다른 글로 보충.
+const sameCat = posts
+  .filter((p) => p.slug !== post.slug && p.data.category === d.category)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+const others = posts
+  .filter((p) => p.slug !== post.slug && p.data.category !== d.category)
+  .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+const related = [...sameCat, ...others].slice(0, 3)
+
+const ctaText = d.category === '유치원'
+  ? { strong: '우리 동네 진짜 유치원·어린이집 후기가 궁금하다면?', span: '별별선생에서 실제 학부모 후기를 확인해 보세요.' }
+  : { strong: `${d.category} 강사, 어디서 배울지 고민된다면?`, span: '별별선생에서 실제 수강 후기를 확인해 보세요.' }
+
+const blogPosting = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.publishedAt.toISOString(),
+  dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
+  ...(d.heroImage ? { image: d.heroImage } : {}),
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+  author: { '@type': 'Organization', name: '별별선생' },
+  publisher: {
+    '@type': 'Organization',
+    name: '별별선생',
+    logo: { '@type': 'ImageObject', url: 'https://d27b8p6cm1t9cq.cloudfront.net/static/images/logo/logo_square_orange.png' },
+  },
+}
+const faqPage = d.faq && d.faq.length
+  ? { '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
+  : null
+const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
+---
+<BaseLayout
+  title={`${d.title} - 별별선생`}
+  description={d.description}
+  canonical={canonical}
+  ogImage={d.heroImage}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  <article>
+    <header class="container article-head">
+      <span class="cat" style={`color:${cColor};background:${cBg}`}>{d.category}</span>
+      <h1>{d.title}</h1>
+      <div class="meta"><time datetime={d.publishedAt.toISOString()}>{fmt(d.publishedAt)}</time></div>
+    </header>
+
+    <div class="article-body">
+      <Content />
+    </div>
+
+    <!-- 본문 하단 CTA 배너 (카테고리 고정 색상) -->
+    <div class="container">
+      <div class="cta-banner" style={`background:${cColor}`}>
+        <div class="txt">
+          <strong>{ctaText.strong}</strong>
+          <span>{ctaText.span}</span>
+        </div>
+        <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>후기 확인하기 →</a>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="origin-link">
+        <span>이 글이 속한 <strong style={`color:${cColor}`}>{d.category}</strong> 게시판에서 더 많은 글을 볼 수 있어요.</span>
+        <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>원본 게시판 가기 →</a>
+      </div>
+    </div>
+
+    {related.length > 0 && (
+      <section class="container related">
+        <h2>관련 추천 글</h2>
+        <div class="related-grid">
+          {related.map((p) => (
+            <a class="related-card" href={`/blog/${p.slug}`}>
+              {p.data.heroImage
+                ? <img class="thumb" src={p.data.heroImage} alt={p.data.heroImageAlt} loading="lazy" />
+                : <div class="thumb"></div>}
+              <div class="b">
+                <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
+                <h3>{p.data.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>

@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getCollection } from 'astro:content'
+
+const posts = await getCollection('posts', ({ data }) => !data.draft)
+const counts = new Map<string, number>()
+for (const p of posts) counts.set(p.data.category, (counts.get(p.data.category) ?? 0) + 1)
+const CATE_ORDER = ['공무원', '영어', '유치원', '수능/내신', '취업/자격증']
+const cats = CATE_ORDER.filter((c) => counts.has(c)).concat(
+  [...counts.keys()].filter((c) => !CATE_ORDER.includes(c)),
+)
+---
+<BaseLayout title="검색 - 별별정보" description="별별정보 블로그 내 검색">
+  <div class="container" style="padding-block:32px 56px; max-width:820px;">
+    <h1 style="font-size:24px; font-weight:700; margin:0 0 16px;">별별정보 검색</h1>
+
+    <div class="search-box">
+      <input id="q" type="search" placeholder="궁금한 정보를 검색해 보세요 (예: 유치원, 공무원)" aria-label="검색어" autocomplete="off" />
+    </div>
+
+    <div class="search-chips" id="chips">
+      {cats.map((c) => <button type="button" class="chip-btn" data-cat={c}>{c}</button>)}
+    </div>
+
+    <p id="status" class="search-status">검색어를 입력하거나 카테고리를 선택하세요.</p>
+    <div id="results" class="search-results"></div>
+  </div>
+
+  <style>
+    .search-box input { width:100%; font-size:16px; padding:14px 18px; border:1px solid var(--border); border-radius:999px; outline:none; background:var(--muted); }
+    .search-box input:focus { box-shadow:0 0 0 3px color-mix(in oklch, var(--primary) 25%, transparent); background:var(--background); }
+    .search-chips { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 6px; }
+    .chip-btn { font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--background); color:var(--muted-foreground); cursor:pointer; }
+    .chip-btn:hover, .chip-btn.active { background:var(--secondary); color:var(--primary); border-color:transparent; }
+    .search-status { font-size:13px; color:var(--muted-foreground); margin:14px 0; }
+    .search-results { display:flex; flex-direction:column; }
+    .sr-item { display:grid; grid-template-columns:120px 1fr; gap:14px; padding:16px 0; border-bottom:1px solid var(--border); }
+    .sr-item .thumb { aspect-ratio:4/3; width:100%; object-fit:cover; border-radius:var(--radius-md); background:var(--muted); }
+    .sr-item .cat { display:inline-block; font-size:11px; font-weight:500; padding:2px 8px; border-radius:var(--radius-md); background:var(--secondary); color:var(--primary); margin-bottom:6px; }
+    .sr-item h3 { font-size:16px; font-weight:600; margin:0 0 6px; line-height:1.4; }
+    .sr-item p { font-size:13px; color:var(--muted-foreground); margin:0 0 6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .sr-item time { font-size:12px; color:var(--muted-foreground); }
+    @media (max-width:480px){ .sr-item{ grid-template-columns:90px 1fr; } }
+  </style>
+
+  <script>
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '')
+    const COLORS = {
+      '공무원': ['#1d4ed8', '#e8effc'],
+      '영어': ['#0891b2', '#e0f5fa'],
+      '유치원': ['#ff5722', '#ffece5'],
+      '수능/내신': ['#f97316', '#fff0e2'],
+      '취업/자격증': ['#059669', '#e3f6ee'],
+    }
+    const cc = (c) => (COLORS[c] || ['#6d28d9', '#f0ebfb'])
+    const q = document.getElementById('q')
+    const results = document.getElementById('results')
+    const status = document.getElementById('status')
+    const chips = document.getElementById('chips')
+    let data = []
+    let activeCat = ''
+
+    fetch(`${base}/search.json`).then((r) => r.json()).then((d) => { data = d; render() })
+
+    function render() {
+      const term = (q.value || '').trim().toLowerCase()
+      let list = data
+      if (activeCat) list = list.filter((p) => p.category === activeCat)
+      if (term) list = list.filter((p) =>
+        (p.title + ' ' + p.description + ' ' + p.category).toLowerCase().includes(term))
+
+      if (!term && !activeCat) { status.textContent = '검색어를 입력하거나 카테고리를 선택하세요.'; results.innerHTML = ''; return }
+      status.textContent = `${list.length}개의 글을 찾았습니다.`
+      results.innerHTML = list.map((p) => {
+        const [fg, bg] = cc(p.category)
+        return `
+        <a class="sr-item" href="${base}/${p.slug}">
+          ${p.heroImage ? `<img class="thumb" src="${p.heroImage}" alt="" loading="lazy">` : `<div class="thumb"></div>`}
+          <div>
+            <span class="cat" style="color:${fg};background:${bg}">${p.category}</span>
+            <h3>${p.title}</h3>
+            <p>${p.description}</p>
+            <time>${p.date}</time>
+          </div>
+        </a>`}).join('')
+    }
+
+    q.addEventListener('input', render)
+    chips.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip-btn'); if (!btn) return
+      const cat = btn.dataset.cat
+      activeCat = activeCat === cat ? '' : cat
+      ;[...chips.children].forEach((b) => b.classList.toggle('active', b.dataset.cat === activeCat))
+      render()
+    })
+
+    const usp = new URLSearchParams(location.search)
+    if (usp.get('q')) q.value = usp.get('q')
+    if (usp.get('cat')) {
+      activeCat = usp.get('cat')
+      ;[...chips.children].forEach((b) => b.classList.toggle('active', b.dataset.cat === activeCat))
+    }
+  </script>
+</BaseLayout>
