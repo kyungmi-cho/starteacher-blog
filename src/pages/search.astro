@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
 import { getCollection } from 'astro:content'
 
 const posts = await getCollection('posts', ({ data }) => !data.draft)
@@ -74,7 +74,7 @@ const cats = CATE_ORDER.filter((c) => counts.has(c)).concat(
       results.innerHTML = list.map((p) => {
         const [fg, bg] = cc(p.category)
         return `
-        <a class="sr-item" href="${base}/${p.slug}">
+        <a class="sr-item" href="${base}/${p.slug}/">
           ${p.heroImage ? `<img class="thumb" src="${p.heroImage}" alt="" loading="lazy">` : `<div class="thumb"></div>`}
           <div>
             <span class="cat" style="color:${fg};background:${bg}">${p.category}</span>

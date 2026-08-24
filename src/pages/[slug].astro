@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import { catColor, catBg, catUrl } from '../../lib/categories'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { catColor, catBg, catUrl } from '../lib/categories'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft)
@@ -12,7 +12,9 @@ const { post, posts } = Astro.props
 const { Content } = await post.render()
 const d = post.data
 
-const url = new URL(`/blog/${post.slug}`, Astro.site).href
+const BASE = import.meta.env.BASE_URL
+const postHref = (slug: string) => `${BASE}${slug}/`
+const url = new URL(postHref(post.slug), Astro.site).href
 const canonical = d.canonicalUrl ?? url
 const fmt = (x: Date) =>
   `${x.getFullYear()}.${String(x.getMonth() + 1).padStart(2, '0')}.${String(x.getDate()).padStart(2, '0')}`
@@ -99,7 +101,7 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
         <h2>관련 추천 글</h2>
         <div class="related-grid">
           {related.map((p) => (
-            <a class="related-card" href={`/blog/${p.slug}`}>
+            <a class="related-card" href={postHref(p.slug)}>
               {p.data.heroImage
                 ? <img class="thumb" src={p.data.heroImage} alt={p.data.heroImageAlt} loading="lazy" />
                 : <div class="thumb"></div>}

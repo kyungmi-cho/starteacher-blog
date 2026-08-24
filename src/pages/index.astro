@@ -1,11 +1,15 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseLayout from '../../layouts/BaseLayout.astro'
-import { catColor, catBg } from '../../lib/categories'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { catColor, catBg } from '../lib/categories'
 
 const all = (await getCollection('posts', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
 )
+
+const BASE = import.meta.env.BASE_URL
+const postHref = (slug: string) => `${BASE}${slug}/`
+const searchHref = (cat: string) => `${BASE}search/?cat=${encodeURIComponent(cat)}`
 
 const fmt = (d: Date) =>
   `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`
@@ -35,12 +39,12 @@ const showHero = all.length > 1 // 글이 1개면 hero 숨겨 중복 방지
     <aside class="sidebar">
       <div class="home">MAIN</div>
       <ul class="cat-list">
-        <li><a class="all active" href="/blog"><span>전체글 보기</span><span class="count">{all.length.toLocaleString()}</span></a></li>
+        <li><a class="all active" href={BASE}><span>전체글 보기</span><span class="count">{all.length.toLocaleString()}</span></a></li>
         <li class="cat-divider" aria-hidden="true"></li>
         {sideCats.map((c) => (
           <li>
-            <a href={`/blog/search?cat=${encodeURIComponent(c)}`}>
-              <span style={`color:${catColor(c)}`}>{c}</span><span class="count">{(counts.get(c) ?? 0).toLocaleString()}</span>
+            <a href={searchHref(c)}>
+              <span>{c}</span><span class="count">{(counts.get(c) ?? 0).toLocaleString()}</span>
             </a>
           </li>
         ))}
@@ -73,7 +77,7 @@ const showHero = all.length > 1 // 글이 1개면 hero 숨겨 중복 방지
       {showHero && latest && (
         <section class="section">
           <h2>방금 올라온 글</h2>
-          <a class="hero-card" href={`/blog/${latest.slug}`}>
+          <a class="hero-card" href={postHref(latest.slug)}>
             {latest.data.heroImage
               ? <img class="thumb" src={latest.data.heroImage} alt={latest.data.heroImageAlt} loading="lazy" />
               : <div class="thumb"></div>}
@@ -92,7 +96,7 @@ const showHero = all.length > 1 // 글이 1개면 hero 숨겨 중복 방지
           <h2>이런 글은 어때요?</h2>
           <div class="reco-grid">
             {reco.map((p) => (
-              <a class="reco-card" href={`/blog/${p.slug}`}>
+              <a class="reco-card" href={postHref(p.slug)}>
                 {p.data.heroImage
                   ? <img class="thumb" src={p.data.heroImage} alt={p.data.heroImageAlt} loading="lazy" />
                   : <div class="thumb"></div>}
@@ -113,14 +117,14 @@ const showHero = all.length > 1 // 글이 1개면 hero 숨겨 중복 방지
         ) : (
           listItems.map((p) => (
             <article class="list-item">
-              <a href={`/blog/${p.slug}`}>
+              <a href={postHref(p.slug)}>
                 {p.data.heroImage
                   ? <img class="thumb" src={p.data.heroImage} alt={p.data.heroImageAlt} loading="lazy" />
                   : <div class="thumb"></div>}
               </a>
               <div class="body">
                 <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
-                <h3><a href={`/blog/${p.slug}`}>{p.data.title}</a></h3>
+                <h3><a href={postHref(p.slug)}>{p.data.title}</a></h3>
                 <p>{p.data.description}</p>
                 <time datetime={p.data.publishedAt.toISOString()}>{fmt(p.data.publishedAt)}</time>
               </div>
