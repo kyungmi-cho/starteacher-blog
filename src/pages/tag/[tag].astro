@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import { catColor, catBg } from '../../lib/categories'
-import { fmtDate, defaultThumb, readingMinutes } from '../../lib/blog'
+import { fmtDate, postThumb, readingMinutes } from '../../lib/blog'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft)
@@ -27,7 +27,7 @@ const postHref = (slug: string) => `${BASE}${slug}/`
 
     <div class="tag-list">
       {list.map((p) => {
-        const thumb = p.data.heroImage || defaultThumb(p.data.category)
+        const thumb = postThumb(p.data.heroImage, p.data.category, p.slug)
         const mins = readingMinutes(p.body ?? '')
         return (
           <article class="list-item">

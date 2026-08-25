@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import { catColor, catBg, catUrl, catSlug } from '../lib/categories'
-import { fmtDate, defaultThumb, readingMinutes, buildToc } from '../lib/blog'
+import { fmtDate, postThumb, readingMinutes, buildToc } from '../lib/blog'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft)
@@ -153,7 +153,7 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
         <div class="related-grid">
           {related.map((p) => (
             <a class="related-card" href={postHref(p.slug)}>
-              <img class="thumb" src={p.data.heroImage || defaultThumb(p.data.category)} alt={p.data.heroImageAlt} loading="lazy" />
+              <img class="thumb" src={postThumb(p.data.heroImage, p.data.category, p.slug)} alt={p.data.heroImageAlt} loading="lazy" />
               <div class="b">
                 <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
                 <h3>{p.data.title}</h3>

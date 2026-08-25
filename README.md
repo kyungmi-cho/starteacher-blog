@@ -34,3 +34,18 @@ tags: ["수능", "학습전략"]
 series:
   name: "수능 D-100 준비"
   order: 1
+
+## v5 변경 (2026-08) — 카테고리 9종 + 랜덤 기본 이미지
+- 카테고리 9종으로 확장: 공무원·영어·유치원·수능/내신·취업/자격증·외국어·대학원/편입·임용/기타고시·교수
+- 헤더/사이드바가 src/lib/categories.ts 의 CATE_ORDER 순서를 따름(단일 관리)
+- 새 글 2편: 교수(수강신청), 영어(오픽/토스)
+
+### 랜덤 기본 썸네일 규칙 (이미지 없는 글)
+- 폴더: public/thumbs/{카테고리slug}/  (slug는 categories.ts 참고)
+    gongmuwon, english, kindergarten, suneung, jobs, language, grad, gosi, professor
+- 파일명: 1.jpg, 2.jpg, 3.jpg ... 1부터 연속 번호
+- 장수 지정: categories.ts 의 각 카테고리 thumbs 값(현재 3). 파일을 늘리면 이 숫자도 함께 올릴 것
+- 선택 방식: 글 slug 해시로 고정 랜덤 → 같은 글은 항상 같은 이미지(재빌드 깜빡임 없음), 글마다 분산
+- thumbs: 0 이면 카테고리 색 SVG 자동 폴백
+- 실제 이미지 교체: public/thumbs/{slug}/ 안의 1.jpg~ 를 원하는 이미지로 덮어쓰기(비율 4:3 권장, 800x600)
+- 현재 들어있는 이미지는 색상 플레이스홀더이므로 실제 이미지로 교체 권장

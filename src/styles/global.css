@@ -35,7 +35,8 @@ img { max-width:100%; height:auto; display:block; }
 .site-header .bar { display:flex; align-items:center; gap:24px; height:64px; }
 .brand { display:flex; align-items:center; gap:8px; font-size:18px; font-weight:600; letter-spacing:-0.3px; flex-shrink:0; }
 .brand .chip { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:var(--radius-lg); background:var(--primary); color:var(--primary-foreground); font-size:15px; }
-.header-nav { display:flex; gap:20px; flex:1; overflow:hidden; }
+.header-nav { display:flex; gap:16px; flex:1; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; }
+.header-nav::-webkit-scrollbar { display:none; }
 .header-nav a { font-size:14px; font-weight:500; color:color-mix(in oklch, var(--foreground) 80%, transparent); white-space:nowrap; }
 .header-nav a:hover { color:var(--primary); }
 .header-tag { font-size:15px; font-weight:700; color:var(--primary); border-bottom:2px solid var(--primary); padding-bottom:2px; flex-shrink:0; }
