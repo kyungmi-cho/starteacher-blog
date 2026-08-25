@@ -22,7 +22,7 @@
 }
 
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
 body { margin:0; font-family:var(--font-sans); color:var(--foreground); background:var(--background);
   line-height:1.7; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; word-break:keep-all; }
 a { color: inherit; text-decoration: none; }
@@ -188,3 +188,33 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--primary); outlin
 .cta-banner .txt span { font-size:14px; opacity:.9; }
 .cta-banner a { flex-shrink:0; background:#fff !important; font-size:14px; font-weight:700; padding:12px 22px; border-radius:999px; white-space:nowrap; }
 .cta-banner a:hover { transform:translateY(-1px); }
+/* ===== v8: 모바일 헤더(햄버거 드로어) + 반응형 ===== */
+.nav-burger { display:none; flex-direction:column; gap:4px; width:36px; height:36px; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.nav-burger span { width:20px; height:2px; background:var(--foreground); border-radius:2px; }
+.nav-drawer, .nav-scrim { display:none; }
+
+@media (max-width:768px){
+  /* 헤더: 가로 카테고리 숨기고 햄버거 노출. 로고+별별정보+검색+버거만 */
+  .header-nav { display:none; }
+  .nav-burger { display:flex; }
+  .site-header .bar { gap:12px; }
+  .header-tag { margin-left:auto; }
+
+  /* 드로어 */
+  .nav-scrim { display:block; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:60; opacity:0; visibility:hidden; transition:opacity .2s, visibility .2s; }
+  .nav-drawer { display:flex; flex-direction:column; position:fixed; top:0; right:0; width:75%; max-width:300px; height:100%; background:var(--background); z-index:61; padding:16px 18px; box-shadow:-4px 0 20px rgba(0,0,0,.12); visibility:hidden; opacity:0; transition:opacity .2s, visibility .25s; overflow-y:auto; }
+  .nav-drawer .drawer-head { display:flex; align-items:center; justify-content:space-between; font-size:15px; font-weight:700; padding-bottom:12px; margin-bottom:8px; border-bottom:1px solid var(--border); }
+  .nav-drawer .drawer-close { cursor:pointer; font-size:16px; color:var(--muted-foreground); padding:4px 8px; }
+  .nav-drawer a { padding:12px 6px; font-size:15px; border-bottom:1px solid var(--border); }
+  .nav-drawer a:hover { color:var(--primary); text-decoration:none; }
+  .nav-drawer .drawer-search { border-bottom:none; margin-top:8px; color:var(--primary); font-weight:600; }
+
+  .nav-toggle:checked ~ .nav-scrim { opacity:1; visibility:visible; }
+  .nav-toggle:checked ~ .nav-drawer { visibility:visible; opacity:1; }
+
+  /* 메인: 모바일에서 피드 먼저, 사이드바는 뒤로 */
+  .layout { display:flex; flex-direction:column; gap:0; padding-block:20px 40px; }
+  .layout .feed { order:1; }
+  .layout .sidebar { order:2; position:static; margin-top:32px; padding-top:24px; border-top:1px solid var(--border); }
+  .sidebar .home { display:none; } /* 모바일 MAIN 라벨 불필요 */
+}

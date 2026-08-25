@@ -59,6 +59,7 @@ const jsonLdList = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
   </head>
 
   <body>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" hidden />
     <header class="site-header">
       <div class="container bar">
         <a class="brand" href={base} aria-label="별별선생 별별정보 홈">
@@ -70,8 +71,21 @@ const jsonLdList = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
         </nav>
         <span class="header-tag">별별정보</span>
         <a class="header-search" href={searchHref()} aria-label="블로그 내 검색">⌕</a>
+        <label for="nav-toggle" class="nav-burger" aria-label="카테고리 메뉴 열기">
+          <span></span><span></span><span></span>
+        </label>
       </div>
     </header>
+    <!-- 모바일 드로어(카테고리) — header 밖에 두어 backdrop-filter 영향 회피 -->
+    <label for="nav-toggle" class="nav-scrim" aria-hidden="true"></label>
+    <nav class="nav-drawer" aria-label="카테고리 메뉴">
+      <div class="drawer-head">
+        <span>카테고리</span>
+        <label for="nav-toggle" class="drawer-close" aria-label="닫기">✕</label>
+      </div>
+      {CATE_ORDER.map((c) => <a href={catHref(c)}>{c}</a>)}
+      <a class="drawer-search" href={searchHref()}>전체 글 탐색 →</a>
+    </nav>
 
     <main>
       <slot />

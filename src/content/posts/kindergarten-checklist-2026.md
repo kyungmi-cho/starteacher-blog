@@ -1,128 +1,129 @@
 ---
-title: "2026 유치원·어린이집 상담 체크리스트｜방문 전 확인할 10가지"
-description: "아이의 첫 유치원, 어린이집 방문 상담 전 필수로 확인해야 할 10가지 체크리스트입니다. 통원 거리부터 안전, 비용, 실제 이용 후기까지 꼼꼼히 비교해 보세요."
+title: "[2027 우리 아이 첫 등원 대비] 유보통합포털 신청 전 꼭 확인할 유치원·어린이집 방문 상담 체크리스트 4가지!"
+description: "2027학년도 유치원·어린이집을 준비한다면, 유보통합포털 신청 전 방문 상담에서 꼭 확인할 비용·하루일과·돌봄·안전 체크리스트 4가지를 정리했습니다."
 category: "유치원"
-publishedAt: 2026-08-25
-heroImage: "https://cdn.starteacher.co.kr/board/content/6af38a9c3434780591d7f0524e16a70a662419c76a27c8d5704ea131d0b2610fbd3084d591ab830e74c416709700fd97c96fbc3ea82f6184ebb2d3928d01dc07abb2942e6bde398e54ee27814458ba9e"
-heroImageAlt: "유치원 어린이집 방문 상담을 앞두고 확인사항을 정리하는 부모"
-tags: ["유치원", "어린이집", "상담", "체크리스트"]
+categoryUrl: "https://www.starteacher.co.kr/kindergarten/community/info/articles"
+publishedAt: 2026-08-20
+heroImage: "https://cdn.starteacher.co.kr/board/content/ac5e20aacd732168ea964fc5935a46681c72afdac341ffacfd62728c801698f31b70a3a7017f68e52c6b77724d4c1b1d"
+heroImageAlt: "유보통합포털 홈페이지 화면"
+canonicalUrl: "https://www.starteacher.co.kr/blog/2027-kinder-visit-checklist"
+tags: ["유치원", "어린이집", "유보통합", "입학준비"]
 faq:
-  - q: "유치원·어린이집을 고를 때 가장 먼저 무엇을 봐야 하나요?"
-    a: "하나의 항목만으로 결정하기보다 통원 가능 거리와 운영시간처럼 매일 반드시 충족돼야 하는 조건부터 확인하고, 교사·보육환경·비용·소통 등을 순서대로 비교하는 것이 좋습니다."
-  - q: "교사 근속연수가 긴 어린이집이 더 좋은 곳인가요?"
-    a: "근속연수는 기관을 이해하는 참고자료가 될 수 있지만 그 자체로 보육의 질이나 근무환경을 판단할 수는 없습니다. 실제 반 구성과 교사 배치, 상담 내용 등을 함께 확인하세요."
-  - q: "2026년에는 유치원·어린이집 비용이 모두 무료인가요?"
-    a: "2026년부터 4~5세 무상교육·보육 지원이 확대됐지만, 기관 유형과 프로그램에 따라 추가로 부담하는 비용이 있을 수 있습니다. 실제 기관별 수납액을 확인하는 것이 정확합니다."
-  - q: "방문 상담만으로 부족한 정보는 어디에서 확인할 수 있나요?"
-    a: "유치원알리미와 어린이집 정보공개에서 학급·교직원·비용·급식·통학차량 등의 공식 정보를 먼저 확인하고, 방문 상담과 실제 이용 후기를 함께 비교해 보세요."
+  - q: "정부 지원을 제외하고 학부모가 매달 실제로 부담하는 비용은 평균 얼마인가요?"
+    a: "특별활동비, 현장학습비, 교재·교구비, 차량비 등 추가 부담 항목은 기관별로 다르므로 월평균 실제 부담액과 결제 주기를 상담에서 확인하세요."
+  - q: "연령별 하루 일과표를 볼 수 있을까요?"
+    a: "자유놀이·특별활동·야외활동·식사·낮잠 시간이 하루 중 어떻게 배치되는지 연령별 일과표로 확인하고 두 기관 이상을 같은 기준으로 비교하는 것이 좋습니다."
+  - q: "방학 중에도 급식과 간식이 제공되나요, 아니면 도시락 준비가 필요한가요?"
+    a: "방학 중에는 평소와 운영 방식이 달라질 수 있으므로 방학 기간·운영시간, 급식 제공 여부, 도시락 준비 필요 여부를 미리 확인하세요."
 ---
 
-안녕하세요. 부모님들의 육아 동지이자 교육 정보 메이트 **별별선생**입니다.
-
-아이의 첫 유치원이나 어린이집을 알아보기 시작하면 거리부터 선생님, 급식, 비용, 돌봄시간까지 확인해야 할 것이 생각보다 많습니다. 특히 한 번의 방문 상담에서 받은 인상만으로 결정하기보다 **공식 정보공시에서 확인할 내용과 직접 상담해야 할 내용을 나눠 보는 것**이 좋습니다. 2026년 7월 기준으로 유치원·어린이집을 비교할 때 살펴볼 만한 **10가지 체크포인트**를 정리해 보겠습니다.
-
-## 💡 방문 상담 전 핵심 체크
-
-* **생활:** 통원 거리·운영시간·하루 일과
-* **교사:** 실제 반 구성·교사 현황·근속 정보
-* **안전·건강:** 통학차량·CCTV 절차·급식·알레르기 대응
-* **비용:** 지원금만 보지 말고 실제 추가 부담액 확인
-* **이용 경험:** 공식 정보와 상담 내용에 여러 보호자의 후기를 함께 참고
-
----
-
-## 1. 통원 거리와 실제 등·하원 동선
-
-기관까지의 거리는 매일 반복되는 생활과 직접 연결됩니다. 평소 등원뿐 아니라 아이가 갑자기 아프거나 일찍 하원해야 하는 상황도 함께 생각해 보세요. 통학차량을 이용한다면 단순히 차량 운행 여부만 확인하지 말고 **실제 탑승시간, 승·하차 장소, 동승보호자, 운행시간**도 함께 확인하는 것이 좋습니다.
-
-## 2. 정원보다 '실제 반 구성과 교사 대 아동 비율'을 확인하세요
-
-기관 전체 정원보다 우리 아이가 들어갈 **연령별 반에 실제로 몇 명의 아이와 교사가 배치되는지**를 확인하는 편이 더 구체적입니다. 2026년에는 정부가 어린이집 0세반의 교사 대 아동 비율을 기존 1:3에서 1:2로 개선하는 정책을 추진하고 있습니다. 다만 실제 운영 비율은 기관과 반 편성, 특례 여부 등에 따라 달라질 수 있습니다.
-
-> **상담 질문:** "우리 아이가 들어갈 반은 현재 몇 명이고, 담당 교사는 몇 분인가요?"
-
-## 3. 교사 근속기간은 '참고자료'로 확인하세요
-
-담임교사가 자주 바뀌는지 궁금하다면 어린이집의 경우 정보공시에서 **원장과 보육교사의 현 기관 근속연수**를 확인할 수 있습니다. 다만 근속기간이 길다는 사실만으로 근무환경이나 보육의 질이 좋다고 단정할 수는 없습니다. 상담할 때 교사 배치와 담임 변경 시 인수인계 방식 등을 함께 물어보세요.
-
-## 4. 급식·간식과 알레르기 대응 방법
-
-식단표만 보기보다 급식을 직접 조리하는지, 위탁하는지, 식재료와 식단은 어떻게 안내되는지 확인해 보세요. 음식 알레르기가 있는 아이라면 **알레르기 정보 전달 방법, 대체식 제공 가능 여부, 교차오염 방지 방법**을 구체적으로 질문하는 것이 좋습니다.
-
-## 5. 안전 관리는 시설보다 '운영 절차'까지 확인하세요
-
-출입문 잠금장치나 통학차량처럼 눈에 보이는 시설도 중요하지만 실제 사고가 발생했을 때 기관이 어떻게 대응하는지도 확인해야 합니다.
-
-* 외부인 출입은 어떻게 관리하는지
-* 응급상황이 발생하면 보호자에게 어떻게 연락하는지
-* 통학차량 이용 시 동승보호자와 승·하차 확인은 어떻게 하는지
-* CCTV 영상 열람이 필요한 경우 어떤 절차를 거치는지
-
-어린이집 CCTV는 보호자가 원한다고 즉시 자유롭게 확인하는 방식은 아니며, 관련 사유와 절차에 따라 열람을 요청하게 됩니다. 따라서 **"잘 보여주나요?"보다 "열람 절차를 어떻게 안내하나요?"**라고 질문하는 편이 정확합니다.
-
-![유치원 어린이집 상담에서 급식 안전 하루 일과를 확인하는 체크리스트](https://cdn.starteacher.co.kr/board/content/217771de1e902702b332c9bdcc413c823a13a479db856801fb6b24f8a1ce59a665d59d90aac6815f6794ee6e41acad683b36147b57dbcae35b8c7123c4a5138be5315b85f34affd0734e6f35f4a786f7)
-
-## 6. 프로그램 이름보다 실제 하루 일과를 보세요
-
-특색 프로그램의 이름만 보기보다 **자유놀이, 바깥놀이, 식사, 낮잠, 정적인 활동이 하루 안에서 어떻게 구성되는지**를 살펴보세요. 아이의 성향도 고려할 수 있지만 활동적인 아이에게 활동량이 많은 기관이 무조건 좋다거나, 조용한 아이에게 정적인 기관이 무조건 좋다고 단정할 필요는 없습니다. 전체 일과가 연령과 발달 수준에 맞게 구성돼 있는지를 먼저 확인하세요.
-
-## 7. 우리 가족이 실제로 이용할 수 있는 돌봄시간인지 확인하세요
-
-맞벌이 가정이라면 기관이 문을 여는 시간뿐 아니라 **우리 아이가 실제 이용할 수 있는 돌봄·방과후 과정의 조건**을 확인해야 합니다.
-
-* 기본 운영시간과 등·하원 가능 시간
-* 어린이집 연장보육 또는 유치원 방과후 과정 운영 여부
-* 방학·재량휴업일 등의 운영 방식
-* 늦은 하원이 필요한 경우 실제 이용 절차
-
-## 8. 정부 지원 이후 '우리 집이 실제로 내는 금액'을 확인하세요
-
-2026년에는 유아 무상교육·보육 지원 대상이 기존 5세에서 **4~5세로 확대**됐습니다. 기관 유형에 따라 유아학비·방과후과정비·어린이집 기타필요경비 등의 추가 지원이 이루어집니다. 하지만 '무상교육·보육'이라는 표현만 보고 모든 가정의 모든 비용이 0원이라고 이해해서는 안 됩니다. 기관별 프로그램과 이용 서비스에 따라 실제 부담액이 달라질 수 있습니다.
-
-> **확인할 비용:** 특별활동·특성화 프로그램, 현장학습, 통학차량, 피복류 등 **실제로 이용할 때 추가로 부담하게 되는 비용과 결제주기**를 확인하세요.
-
-## 9. 사진 개수보다 보호자와 어떻게 소통하는지 확인하세요
-
-알림장에 사진을 얼마나 많이 올려주는지만으로 소통의 질을 판단하기는 어렵습니다. **일상적인 안내는 어떤 방식으로 이루어지는지, 건강이나 행동의 변화가 있을 때 어떻게 연락하는지, 개별 상담은 언제 어떤 방식으로 가능한지**를 확인해 보세요.
-
-## 10. 실제 이용 후기는 공식 정보와 함께 교차 확인하세요
-
-기관 설명만으로는 등·하원 경험이나 보호자 소통처럼 실제로 이용해야 알 수 있는 부분이 있습니다. 이럴 때 다른 보호자의 후기를 참고할 수 있습니다. 다만 후기 하나만으로 기관 전체를 판단하기보다 **여러 이용자의 경험 + 공식 정보공시 + 직접 상담·방문에서 확인한 내용**을 함께 비교하는 것이 좋습니다.
-
----
-
-## 🔎 방문하기 전에 온라인에서 먼저 확인할 수 있는 정보도 있습니다
-
-모든 내용을 상담에서 처음 물어볼 필요는 없습니다. 공식 정보공시 서비스를 먼저 확인하면 후보 기관을 비교하기가 훨씬 쉬워집니다.
-
-* **유치원알리미:** 기본현황, 원아·학급, 교직원, 원비, 급식, 통학차량 등
-* **어린이집 정보공개:** 반 현황, 보육교직원, 교사 근속연수, 보육과정, 보육료·기타필요경비 등
-
-## ✅ 유치원·어린이집 상담 전 최종 체크리스트
-
-| 영역 | 확인할 내용 |
-| :--- | :--- |
-| **통원** | 매일 가능한 거리와 실제 통학차량 시간을 확인했는가? |
-| **교사·반 구성** | 우리 아이가 들어갈 반의 실제 아동·교사 수를 확인했는가? |
-| **급식·안전** | 알레르기, 응급상황, 통학차량, CCTV 절차를 확인했는가? |
-| **운영시간** | 실제 필요한 시간까지 돌봄·방과후 이용이 가능한가? |
-| **비용** | 정부 지원 후 실제 월·연간 부담액을 확인했는가? |
-| **교차 확인** | 정보공시·방문 상담·여러 이용 후기를 함께 비교했는가? |
-
-![유치원 어린이집 선택 전 공식 정보와 실제 이용 후기를 비교하는 부모](https://cdn.starteacher.co.kr/board/content/16ed7cd6cd061219afe035709f9d7d77fcfacce4dd0181934555faf5d094fc59c72f8835bf4dea17ca19f021e489ef977745e294693e8d43a9159676be5f3ce5c679a26e24c75c3926b98de250c2ea3f)
-
----
-
-## 🌟 공식 정보와 함께 실제 이용 경험도 비교해 보세요
-
-후보 기관을 어느 정도 추렸다면 공식 공시정보와 상담에서 확인한 내용에 실제 이용자의 경험도 함께 참고해 보세요. 별별선생에서 우리 동네 유치원·어린이집에 대한 이용자 후기를 비교할 수 있습니다.
-
-👉 [유치원·어린이집 후기 확인하기](https://www.starteacher.co.kr/kindergarten)
-
----
-
-**정보 출처**
-* 교육부, 「2026년 보육사업안내」
-* 교육부, 2026년 유아 무상교육·보육 지원 확대 안내
-* 유치원알리미·어린이집 정보공개, 기관별 정보공시
-* 영유아보육법 및 어린이집 영상정보처리기기 관련 열람 절차
+<article style="max-width:800px;margin:0 auto;font-family:'Pretendard', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;color:#333333;line-height:1.7;letter-spacing:-0.5px;padding:20px;word-break:keep-all;">
+	<section style="font-size:16px;margin-bottom:40px;">
+		<p style="margin-bottom:15px;line-height:1.7;"><a href="https://enter.childinfo.go.kr/icms/main/IntroPage.html" rel="noopener noreferrer" target="_blank"><img src="https://cdn.starteacher.co.kr/board/content/ac5e20aacd732168ea964fc5935a46681c72afdac341ffacfd62728c801698f31b70a3a7017f68e52c6b77724d4c1b1d" style="width:752px;max-width:100%;height:auto;" alt="유보통합포털 홈페이지 화면"></a></p>
+		<p style="margin-bottom:15px;line-height:1.7;">2027학년도(2027년 3월 입소·입학)를 준비한다면 유치원과 어린이집을 본격적으로 비교해볼 시기입니다. 유치원 입학과 어린이집 입소 신청은 <strong>'유보통합포털'</strong>에서 한 번에 확인할 수 있어 예전보다 신청 과정은 단순해졌습니다.</p>
+		<p style="margin-bottom:15px;line-height:1.7;">다만 신청창구가 하나로 합쳐졌다고 해서 어떤 기관이 우리 아이에게 맞는지까지 포털에서 모두 판단할 수 있는 것은 아닙니다. 정부 지원 여부나 기본 시설 정보뿐 아니라 <strong>실제로 매달 부담하는 비용, 하루 일과, 방학 중 돌봄, 급식·안전·소통 방식</strong>은 기관마다 차이가 있기 때문에 방문 상담에서 직접 확인하는 것이 좋습니다.</p>
+		<div style="background-color:rgb(255, 249, 196);border-left:4px solid rgb(251, 192, 45);padding:15px 20px;border-radius:0 8px 8px 0;margin-top:25px;font-size:15px;color:rgb(93, 64, 55);line-height:1.7;"><strong>📌 신청 일정은 꼭 따로 확인하세요.</strong><br>어린이집은 입소대기 신청이 가능하지만, 유치원은 해당 학년도 모집 일정에 따라 우선모집·일반모집 등이 진행됩니다. 정확한 일정과 지원 자격은 유보통합포털 및 희망 기관의 최신 모집요강을 확인하는 것이 가장 정확합니다.</div>
+	</section>
+	<section style="background-color:#ebf8fa;border:1px solid #b2ebf2;border-radius:12px;padding:25px;margin-bottom:40px;">
+		<h2 style="color:rgb(0, 131, 143);font-size:18px;font-weight:700;margin-top:0;margin-bottom:15px;line-height:1.7;">💡 바쁜 부모님을 위한 1분 핵심 요약</h2>
+		<ul style="margin:0;padding-left:20px;color:#006064;font-size:15px;">
+			<li style="margin-bottom:8px;line-height:1.7;"><strong>신청 창구:</strong> 유치원·어린이집 관련 신청과 정보 확인은 유보통합포털에서</li>
+			<li style="margin-bottom:8px;line-height:1.7;"><strong>비용:</strong> 정부 지원 외 실제 월 부담액과 항목별 정산·환불 기준 확인</li>
+			<li style="margin-bottom:8px;line-height:1.7;"><strong>하루 일과:</strong> 자유놀이·특별활동·야외활동·휴식 시간의 실제 운영 방식 확인</li>
+			<li style="margin-bottom:8px;line-height:1.7;"><strong>돌봄:</strong> 방학, 연장보육, 합반, 급식 제공 여부 확인</li>
+			<li style="line-height:1.7;"><strong>생활·안전:</strong> 알레르기 대응, 사고 연락 절차, 부모 상담·소통 방식 확인</li>
+		</ul>
+	</section>
+	<section>
+		<article style="margin-bottom:40px;">
+			<h2 style="color:rgb(43, 108, 176);font-size:20px;font-weight:700;border-bottom:1px solid rgb(226, 232, 240);padding-bottom:10px;margin-bottom:15px;line-height:1.7;">1. 정부 지원 외 실제로 매달 부담하는 비용</h2>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">교육·보육 지원이 확대되더라도 모든 비용이 사라지는 것은 아닙니다. 특별활동비, 현장학습비, 교재·교구비, 차량비 등 추가 부담 항목은 기관별로 다를 수 있으므로 <strong>월평균 실제 부담액과 결제 주기</strong>를 확인하는 것이 좋습니다.</p>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">또한 중도 퇴소나 전원 상황에 대비해 각 비용이 어떤 기준으로 정산되는지도 확인해두면 예상치 못한 비용 문제를 줄일 수 있습니다.</p>
+			<div style="background-color:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:20px;">
+				<h3 style="margin:0px 0px 10px;color:rgb(73, 80, 87);font-weight:700;line-height:1.7;font-size:16px;letter-spacing:-0.5px;">✅ 실전 질문 예시</h3>
+				<ul style="margin:0;padding-left:20px;color:#212529;font-size:15px;">
+					<li style="margin-bottom:8px;line-height:1.7;">"정부 지원을 제외하고 학부모가 매달 실제로 부담하는 비용은 평균 얼마인가요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;">"특별활동비·교재비·차량비 등은 각각 어떻게 결제하나요?"</li>
+					<li style="line-height:1.7;">"중도 퇴소할 경우 이미 납부한 비용은 항목별로 어떤 기준으로 정산되나요?"</li>
+				</ul>
+			</div>
+		</article>
+		<article style="margin-bottom:40px;">
+			<h2 style="color:rgb(43, 108, 176);font-size:20px;font-weight:700;border-bottom:1px solid rgb(226, 232, 240);padding-bottom:10px;margin-bottom:15px;line-height:1.7;">2. 홍보용 커리큘럼보다 '실제 하루 일과표'</h2>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">프로그램 이름이나 특별활동 종류만 보는 것보다 아이가 하루를 실제로 어떻게 보내는지 확인하는 것이 중요합니다. 자유놀이, 특별활동, 야외활동, 식사, 낮잠·휴식 시간이 하루 중 어떻게 배치되는지 살펴보세요.</p>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">가능하다면 상담 시 <strong>연령별 하루 일과표</strong>를 직접 확인해 두 기관 이상을 같은 기준으로 비교하는 것이 좋습니다.</p>
+			<div style="background-color:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:20px;">
+				<h3 style="margin:0px 0px 10px;color:rgb(73, 80, 87);font-weight:700;line-height:1.7;font-size:16px;letter-spacing:-0.5px;">✅ 실전 질문 예시</h3>
+				<ul style="margin:0;padding-left:20px;color:#212529;font-size:15px;">
+					<li style="margin-bottom:8px;line-height:1.7;">"연령별 하루 일과표를 볼 수 있을까요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;">"자유롭게 놀이하는 시간은 하루에 어느 정도인가요?"</li>
+					<li style="line-height:1.7;">"특별활동과 야외활동은 일주일에 몇 회 정도 운영하나요?"</li>
+				</ul>
+			</div>
+		</article>
+		<article style="margin-bottom:40px;">
+			<h2 style="color:rgb(43, 108, 176);font-size:20px;font-weight:700;border-bottom:1px solid rgb(226, 232, 240);padding-bottom:10px;margin-bottom:15px;line-height:1.7;">3. 방학·연장보육 등 실제 돌봄 운영 방식</h2>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">맞벌이 가정이라면 교육 프로그램만큼 중요한 것이 실제 돌봄 가능 시간입니다. 방학 기간과 방학 중 운영시간, 조기 등원·연장보육 가능 여부, 합반 운영 여부 등을 미리 확인해 두는 것이 좋습니다.</p>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">특히 방학 중에는 평소와 운영 방식이 달라질 수 있으므로 급식 제공 여부나 도시락 준비가 필요한지도 함께 확인하세요.</p>
+			<div style="background-color:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:20px;">
+				<h3 style="margin:0px 0px 10px;color:rgb(73, 80, 87);font-weight:700;line-height:1.7;font-size:16px;letter-spacing:-0.5px;">✅ 실전 질문 예시</h3>
+				<ul style="margin:0;padding-left:20px;color:#212529;font-size:15px;">
+					<li style="margin-bottom:8px;line-height:1.7;">"여름·겨울 방학 기간과 방학 중 운영시간은 어떻게 되나요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;">"조기 등원이나 연장보육은 몇 시부터 몇 시까지 가능한가요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;">"방학 중에는 합반으로 운영하나요?"</li>
+					<li style="line-height:1.7;">"방학 중에도 급식과 간식이 제공되나요, 아니면 도시락 준비가 필요한가요?"</li>
+				</ul>
+			</div>
+		</article>
+		<article style="margin-bottom:40px;">
+			<h2 style="color:rgb(43, 108, 176);font-size:20px;font-weight:700;border-bottom:1px solid rgb(226, 232, 240);padding-bottom:10px;margin-bottom:15px;line-height:1.7;">4. 급식·안전·학부모 소통 방식</h2>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">생활 영역에서는 눈에 보이는 시설의 화려함보다 아이가 매일 이용하는 공간과 실제 대응 체계를 확인하는 것이 좋습니다. 급·간식 식단, 알레르기 대응, 교실과 화장실 이동 동선, 출입 관리 등을 살펴보세요.</p>
+			<p style="margin-bottom:15px;font-size:16px;line-height:1.7;">아이의 생활을 부모에게 어떻게 공유하는지도 중요합니다. 알림장이나 앱 사용 여부, 사고·발열 등 긴급 상황의 연락 절차, 정기 상담 방식도 기관마다 차이가 있습니다.</p>
+			<div style="background-color:#f8f9fa;border:1px solid #dee2e6;border-radius:8px;padding:20px;">
+				<h3 style="margin:0 0 10px;font-size:16px;color:rgb(73, 80, 87);line-height:1.7;">✅ 실전 질문 예시 및 관찰 항목</h3>
+				<ul style="margin:0;padding-left:20px;color:#212529;font-size:15px;">
+					<li style="margin-bottom:8px;line-height:1.7;"><strong>[질문]</strong> "알레르기가 있는 아이는 급식이나 간식을 어떻게 대체해서 제공하나요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;"><strong>[질문]</strong> "다치거나 열이 나는 등 긴급 상황이 생기면 부모에게 어떤 절차로 연락하나요?"</li>
+					<li style="margin-bottom:8px;line-height:1.7;"><strong>[질문]</strong> "아이의 하루 생활은 알림장이나 앱으로 어느 정도 공유되나요?"</li>
+					<li style="line-height:1.7;"><strong>[관찰]</strong> 교실에서 화장실, 놀이공간, 출입구로 이동하는 동선과 출입 관리 방식을 직접 확인해 보세요!</li>
+				</ul>
+			</div>
+		</article>
+	</section>
+	<section style="margin-bottom:40px;">
+		<h2 style="color:rgb(45, 55, 72);font-size:20px;margin-bottom:20px;line-height:1.7;">📝 방문 상담 전 저장해둘 핵심 질문 요약표</h2>
+		<div style="overflow-x:auto;">
+			<table style="width:100%;border-collapse:collapse;text-align:left;font-size:15px;min-width:600px;">
+				<thead>
+					<tr style="background-color:#edf2f7;color:#4a5568;border-top:2px solid #4a5568;border-bottom:2px solid #cbd5e0;">
+						<th scope="col" style="padding:15px;width:25%;"><div style="line-height:1.7;">점검 항목</div></th>
+						<th scope="col" style="padding:15px;width:75%;"><div style="line-height:1.7;">확인할 핵심 내용</div></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr style="border-bottom:1px solid #e2e8f0;">
+						<td style="padding:15px;font-weight:600;color:#2d3748;"><div style="line-height:1.7;">실제 비용</div></td>
+						<td style="padding:15px;color:#4a5568;"><div style="line-height:1.7;">정부 지원 외 월 부담액 / 특별활동비·교재비·차량비 / 중도 퇴소 시 항목별 정산 기준</div></td>
+					</tr>
+					<tr style="border-bottom:1px solid #e2e8f0;background-color:#fbfbfc;">
+						<td style="padding:15px;font-weight:600;color:#2d3748;"><div style="line-height:1.7;">하루 일과</div></td>
+						<td style="padding:15px;color:#4a5568;"><div style="line-height:1.7;">자유놀이 / 특별활동 / 야외활동 / 식사·낮잠·휴식 시간의 실제 배치</div></td>
+					</tr>
+					<tr style="border-bottom:1px solid #e2e8f0;">
+						<td style="padding:15px;font-weight:600;color:#2d3748;"><div style="line-height:1.7;">돌봄 운영</div></td>
+						<td style="padding:15px;color:#4a5568;"><div style="line-height:1.7;">방학 기간 / 조기·연장보육 / 합반 여부 / 방학 중 급식·도시락 여부</div></td>
+					</tr>
+					<tr style="border-bottom:2px solid #cbd5e0;background-color:#fbfbfc;">
+						<td style="padding:15px;font-weight:600;color:#2d3748;"><div style="line-height:1.7;">생활·안전</div></td>
+						<td style="padding:15px;color:#4a5568;"><div style="line-height:1.7;">알레르기 대응 / 출입·이동 동선 / 사고 연락 절차 / 알림장·앱 및 상담 방식</div></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+	<section style="text-align:center;margin-top:50px;">
+		<p style="font-size:16px;margin-bottom:10px;line-height:1.7;">포털에서는 기본 조건과 공개 정보를 비교할 수 있지만, 실제 생활 방식과 운영 분위기는 기관마다 다를 수 있습니다. 상담을 갈 때 위 질문을 같은 순서로 확인해 두면 여러 기관을 비교하기도 훨씬 쉬워집니다.</p>
+		<p style="font-size:16px;margin-bottom:30px;line-height:1.7;">기관 설명뿐 아니라 실제 이용 경험도 함께 확인하고 싶다면 <strong>교육 리뷰 플랫폼 별별선생</strong>에서 유치원·어린이집 후기를 참고해 보세요.</p>
+		<a href="https://www.starteacher.co.kr/kindergarten" rel="noopener noreferrer" style="display:inline-block;background-color:#ff5722;color:#ffffff;text-decoration:none;font-size:18px;font-weight:700;padding:18px 40px;border-radius:30px;" target="_blank">👇 우리 동네 유치원·어린이집 후기 확인하기</a>
+	</section>
+</article>

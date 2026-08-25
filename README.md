@@ -64,3 +64,14 @@ series:
     · 하단 링크 → 블로그 카테고리 페이지(탐색), 문구 "더 많은 글 보러가기 →"
 - CTA 문구를 카테고리별 자연스러운 문장으로 교체(교수="들을 만한 강의인지 궁금하다면" 등)
     문구는 [slug].astro 의 CTA_COPY 객체에서 관리
+
+## v8 변경 (2026-08) — 모바일 최적화
+- 상세 페이지 가로 오버플로(본문 탈주) 해결:
+    · set:html 본문은 Astro scoped CSS 미적용 → :global()로 폭 제한
+    · 원본 표(min-width) 스크롤 블록화(display:block; overflow-x:auto)
+    · article-body 그리드 컬럼 min-width:0
+- 모바일 헤더: 9개 카테고리 가로 나열 제거 → 햄버거(☰) 드로어. 로고+별별정보+검색+버거만 노출
+    · 드로어/스크림은 header(backdrop-filter) 밖에 배치해 fixed 정상 동작
+- 모바일 메인: 글 목록(피드) 우선, 사이드바는 하단으로(order 변경)
+- 상세 모바일 반응형: --post-wide/--post-width 100%, padding 16px, CTA/원본링크 세로 스택, 관련글 1열
+- html { overflow-x:hidden } 로 잔여 가로 스크롤 차단

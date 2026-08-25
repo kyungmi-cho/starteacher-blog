@@ -95,7 +95,7 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
       </div>
     </header>
 
-    <div class="container post-grid">
+    <div class="post-grid">
       <!-- 본문 -->
       <div class="article-body" set:html={finalBody}></div>
 
@@ -193,14 +193,37 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
     /* ===== 본문 + 목차 ===== */
     .post-grid { max-width:var(--post-wide); margin:0 auto; padding-inline:var(--post-pad);
       display:grid; grid-template-columns: minmax(0,1fr) 200px; gap:44px; align-items:start; }
-    .post-grid .article-body { max-width:none; margin:0; }
+    .post-grid .article-body { max-width:none; margin:0; min-width:0; }
     .toc { position:sticky; top:88px; font-size:13px; border-left:2px solid var(--border); padding-left:14px; }
     .toc-title { font-weight:700; margin-bottom:10px; }
     .toc nav { display:flex; flex-direction:column; gap:8px; }
     .toc nav a { color:var(--muted-foreground); line-height:1.4; }
     .toc nav a.lv3 { padding-left:12px; font-size:12px; }
     .toc nav a:hover, .toc nav a.active { color:var(--primary); text-decoration:none; font-weight:600; }
-    @media (max-width:900px){ .post-grid { grid-template-columns:1fr; gap:0; } .toc { display:none; } }
+    @media (max-width:900px){ .post-grid { grid-template-columns:1fr; gap:0; } .toc { display:none !important; } }
+
+    /* ===== 모바일 오버플로 방지 & 폭 정리 ===== */
+    .post { overflow-x:hidden; }
+    /* 본문 인라인 HTML(원본 글)이 컨테이너를 밀어내지 않도록 강제 폭 제한 */
+    :global(.article-body :where(article,section,div,p,ul,ol,h1,h2,h3,h4,figure,img)) { max-width:100% !important; }
+    :global(.article-body article) { padding:0 !important; margin:0 !important; }
+    :global(.article-body img) { height:auto; }
+    /* 표: 인라인 min-width가 있어도 화면을 넘지 않도록 강제 스크롤 블록화 */
+    :global(.article-body table) { display:block !important; width:100% !important; max-width:100% !important; min-width:0 !important; overflow-x:auto !important; -webkit-overflow-scrolling:touch; white-space:nowrap; }
+    :global(.article-body div[style*="overflow-x"]) { max-width:100% !important; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+    @media (max-width:768px){
+      .post { --post-wide:100%; --post-width:100%; --post-pad:16px; }
+      .post-hero { padding-block:28px; margin-bottom:24px; }
+      .post-hero.has-img { padding-block:44px; }
+      .post-hero h1 { font-size:23px; line-height:1.4; }
+      .post-grid, .post-foot { padding-inline:16px; }
+      .post-foot > * { margin-top:24px; }
+      .cta-banner { flex-direction:column; align-items:flex-start; gap:12px; padding:20px; }
+      .cta-banner a { width:100%; text-align:center; }
+      .origin-link { flex-direction:column; align-items:flex-start; gap:8px; }
+      .related-grid { grid-template-columns:1fr; }
+    }
 
 
     /* ===== 하단 존: 시리즈 블록 기준의 넓은 폭으로 통일 ===== */
