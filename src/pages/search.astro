@@ -110,7 +110,7 @@ const topTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
             <img src="${p.heroImage}" alt="" loading="lazy">
           </div>
           <div class="body">
-            <span class="cat" style="color:${fg};background:${bg}; display:inline-block; margin-bottom:6px;">${p.category}</span>
+            <span class="cat" style="color:${fg};background:${bg}; align-self:flex-start; display:inline-block; margin-bottom:6px;">${p.category}</span>
             <h3>${p.title}</h3>
             <p class="summary">${p.description}</p>
             <div class="foot"><time>${p.date}</time><span>·</span><span>${p.minutes}분 읽기</span></div>
