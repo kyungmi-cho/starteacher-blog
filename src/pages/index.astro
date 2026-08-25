@@ -42,12 +42,11 @@ const thumbOf = (p: any) => postThumb(p.data.heroImage, p.data.category, p.slug)
     <aside class="sidebar">
       <a class="home" href={BASE}>MAIN</a>
       <ul class="cat-list">
-        <li><a class="all active" href={BASE}><span>전체글 보기</span><span class="count">{all.length.toLocaleString()}</span></a></li>
+        <li><a class="all" href={BASE}><span>전체글 보기</span><span class="count">{all.length.toLocaleString()}</span></a></li>
         <li class="cat-divider" aria-hidden="true"></li>
         {sideCats.map((c) => (
           <li>
             <a href={catHref(c)}>
-              <span class="dot" style={`background:${catColor(c)}`}></span>
               <span class="name">{c}</span><span class="count">{(counts.get(c) ?? 0).toLocaleString()}</span>
             </a>
           </li>

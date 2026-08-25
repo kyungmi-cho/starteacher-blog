@@ -83,13 +83,17 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
   <div id="progress" class="read-progress" style={`background:${cColor}`}></div>
 
   <article class="post">
-    <header class="container article-head">
-      <nav class="crumb"><a href={BASE}>별별정보</a> <span>›</span> <a href={catHref(d.category)} style={`color:${cColor}`}>{d.category}</a></nav>
-      <h1>{d.title}</h1>
-      <div class="meta">
-        <time datetime={d.publishedAt.toISOString()}>{fmtDate(d.publishedAt)}</time>
-        <span>·</span><span>{minutes}분 읽기</span>
-        {d.series && <><span>·</span><span class="series-badge" style={`color:${cColor}`}>{d.series.name} 시리즈</span></>}
+    <header class={d.heroImage ? 'post-hero has-img' : 'post-hero'} style={d.heroImage ? `--band:${cColor}` : `background:${cBg};--band:${cColor}`}>
+      {d.heroImage && <img class="hero-bg" src={d.heroImage} alt={d.heroImageAlt} />}
+      {d.heroImage && <div class="hero-overlay"></div>}
+      <div class="hero-inner">
+        <nav class="crumb"><a href={BASE}>별별정보</a> <span>›</span> <a href={catHref(d.category)}>{d.category}</a></nav>
+        <h1>{d.title}</h1>
+        <div class="meta">
+          <time datetime={d.publishedAt.toISOString()}>{fmtDate(d.publishedAt)}</time>
+          <span>·</span><span>{minutes}분 읽기</span>
+          {d.series && <><span>·</span><span class="series-badge">{d.series.name} 시리즈</span></>}
+        </div>
       </div>
     </header>
 
@@ -110,68 +114,87 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
       )}
     </div>
 
-    <!-- 태그 -->
-    {(d.tags && d.tags.length > 0) && (
-      <div class="container tag-row">
-        {d.tags.map((t) => <a href={tagHref(t)} class="tag-pill">#{t}</a>)}
-      </div>
-    )}
-
-    <!-- 시리즈 내비 -->
-    {d.series && seriesAll.length > 1 && (
-      <div class="container series-nav">
-        <div class="sn-title" style={`color:${cColor}`}>📚 {d.series.name} 시리즈</div>
-        <div class="sn-links">
-          {seriesPrev
-            ? <a href={postHref(seriesPrev.slug)}>← 이전 편<br /><strong>{seriesPrev.data.title}</strong></a>
-            : <span class="sn-empty">이 시리즈의 첫 편</span>}
-          {seriesNext
-            ? <a class="next" href={postHref(seriesNext.slug)}>다음 편 →<br /><strong>{seriesNext.data.title}</strong></a>
-            : <span class="sn-empty">이 시리즈의 마지막 편</span>}
+    <div class="post-foot">
+      <!-- 태그 -->
+      {(d.tags && d.tags.length > 0) && (
+        <div class="tag-row">
+          {d.tags.map((t) => <a href={tagHref(t)} class="tag-pill">#{t}</a>)}
         </div>
-      </div>
-    )}
+      )}
 
-    <!-- 하단 CTA -->
-    <div class="container">
+      <!-- 시리즈 내비 -->
+      {d.series && seriesAll.length > 1 && (
+        <div class="series-nav">
+          <div class="sn-title" style={`color:${cColor}`}>📚 {d.series.name} 시리즈</div>
+          <div class="sn-links">
+            {seriesPrev
+              ? <a href={postHref(seriesPrev.slug)}>← 이전 편<br /><strong>{seriesPrev.data.title}</strong></a>
+              : <span class="sn-empty">이 시리즈의 첫 편</span>}
+            {seriesNext
+              ? <a class="next" href={postHref(seriesNext.slug)}>다음 편 →<br /><strong>{seriesNext.data.title}</strong></a>
+              : <span class="sn-empty">이 시리즈의 마지막 편</span>}
+          </div>
+        </div>
+      )}
+
+      <!-- 하단 CTA -->
       <div class="cta-banner" style={`background:${cColor}`}>
         <div class="txt"><strong>{ctaText.strong}</strong><span>{ctaText.span}</span></div>
         <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>후기 확인하기 →</a>
       </div>
-    </div>
 
-    <div class="container">
       <div class="origin-link">
         <span>이 글이 속한 <strong style={`color:${cColor}`}>{d.category}</strong> 게시판에서 더 많은 글을 볼 수 있어요.</span>
         <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>원본 게시판 가기 →</a>
       </div>
-    </div>
 
-    {related.length > 0 && (
-      <section class="container related">
-        <h2>관련 추천 글</h2>
-        <div class="related-grid">
-          {related.map((p) => (
-            <a class="related-card" href={postHref(p.slug)}>
-              <img class="thumb" src={postThumb(p.data.heroImage, p.data.category, p.slug)} alt={p.data.heroImageAlt} loading="lazy" />
-              <div class="b">
-                <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
-                <h3>{p.data.title}</h3>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+      {related.length > 0 && (
+        <section class="related">
+          <h2>관련 추천 글</h2>
+          <div class="related-grid">
+            {related.map((p) => (
+              <a class="related-card" href={postHref(p.slug)}>
+                <img class="thumb" src={postThumb(p.data.heroImage, p.data.category, p.slug)} alt={p.data.heroImageAlt} loading="lazy" />
+                <div class="b">
+                  <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
+                  <h3>{p.data.title}</h3>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </div>
   </article>
 
   <style>
+    /* 폭 기준: 본문 읽기폭 + 하단/헤더는 조금 더 넓게 */
+    .post { --post-width: 760px; --post-wide: 920px; --post-pad: 20px; }
+
     .read-progress { position:fixed; top:0; left:0; height:3px; width:0; z-index:60; transition:width .1s linear; }
-    .post .crumb { font-size:13px; color:var(--muted-foreground); margin-bottom:12px; }
-    .post .crumb a:hover { text-decoration:none; } .post .crumb span { margin:0 4px; }
-    .post .article-head .meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .post .series-badge { font-weight:600; }
-    .post-grid { display:grid; grid-template-columns: minmax(0,1fr) 220px; gap:40px; align-items:start; }
+
+    /* ===== 상단 헤더 밴드 (전체폭) ===== */
+    .post-hero { position:relative; overflow:hidden; padding-block:44px; margin-bottom:36px; }
+    .post-hero .hero-inner { position:relative; z-index:2; max-width:var(--post-wide); margin:0 auto; padding-inline:var(--post-pad); }
+    .post-hero .crumb { font-size:13px; margin-bottom:14px; }
+    .post-hero .crumb a { color:var(--band); font-weight:600; }
+    .post-hero .crumb span { margin:0 4px; color:var(--muted-foreground); }
+    .post-hero h1 { margin:0 0 14px; font-size:30px; font-weight:800; line-height:1.35; letter-spacing:-0.5px; text-align:left; }
+    .post-hero .meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13px; color:var(--muted-foreground); }
+    .post-hero .series-badge { font-weight:600; color:var(--band); }
+
+    /* 이미지 배경형 */
+    .post-hero.has-img { padding-block:64px; }
+    .post-hero .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; }
+    .post-hero .hero-overlay { position:absolute; inset:0; z-index:1; background:linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.62)); }
+    .post-hero.has-img h1, .post-hero.has-img .meta { color:#fff; }
+    .post-hero.has-img .crumb a { color:#fff; }
+    .post-hero.has-img .crumb span { color:rgba(255,255,255,.7); }
+    .post-hero.has-img .series-badge { color:#fff; }
+
+    /* ===== 본문 + 목차 ===== */
+    .post-grid { max-width:var(--post-wide); margin:0 auto; padding-inline:var(--post-pad);
+      display:grid; grid-template-columns: minmax(0,1fr) 200px; gap:44px; align-items:start; }
     .post-grid .article-body { max-width:none; margin:0; }
     .toc { position:sticky; top:88px; font-size:13px; border-left:2px solid var(--border); padding-left:14px; }
     .toc-title { font-weight:700; margin-bottom:10px; }
@@ -184,11 +207,13 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
     .mid-cta { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin:32px 0; padding:18px 20px; border:1px dashed; border-radius:var(--radius-xl); font-size:15px; font-weight:600; }
     .mid-cta a { color:#fff; font-size:14px; font-weight:700; padding:10px 18px; border-radius:999px; white-space:nowrap; }
 
-    .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; max-width:760px; }
+    /* ===== 하단 존: 시리즈 블록 기준의 넓은 폭으로 통일 ===== */
+    .post-foot { max-width:var(--post-wide); margin:0 auto; padding-inline:var(--post-pad); }
+    .post-foot > * { margin-top:32px; }
+    .post-foot .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:36px; }
     .tag-pill { font-size:13px; padding:6px 12px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
     .tag-pill:hover { background:var(--secondary); color:var(--primary); text-decoration:none; }
 
-    .series-nav { margin-top:32px; }
     .series-nav .sn-title { font-size:15px; font-weight:700; margin-bottom:12px; }
     .sn-links { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
     .sn-links a, .sn-links .sn-empty { border:1px solid var(--border); border-radius:var(--radius-lg); padding:14px 16px; font-size:13px; color:var(--muted-foreground); line-height:1.5; }
@@ -197,6 +222,9 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
     .sn-links .next { text-align:right; }
     .sn-links .sn-empty { display:flex; align-items:center; justify-content:center; }
     @media (max-width:560px){ .sn-links { grid-template-columns:1fr; } .sn-links .next { text-align:left; } }
+
+    /* 하단 블록들이 post-foot 폭을 꽉 채우도록(기존 max-width 무력화) */
+    .post-foot .cta-banner, .post-foot .origin-link, .post-foot .related { max-width:none; margin-left:0; margin-right:0; }
   </style>
 
   <script>

@@ -60,11 +60,8 @@ img { max-width:100%; height:auto; display:block; }
   border-left:3px solid transparent; transition:background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 .cat-list li a:hover { background:var(--muted); color:var(--foreground); }
-.cat-list li a.active { background:var(--muted); color:var(--foreground); font-weight:600; border-left-color:var(--muted-foreground); }
-.cat-list .dot { width:8px; height:8px; border-radius:999px; flex-shrink:0; margin-right:2px; }
 .cat-list .name { flex:1; }
 .cat-list .count { font-size:12px; color:var(--muted-foreground); }
-.cat-list .all { font-weight:600; }
 .cat-list .soon { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 10px; border-radius:var(--radius-md); font-size:14px; color:color-mix(in oklch,var(--muted-foreground) 80%,transparent); }
 .cat-list .soon:hover { background:var(--muted); }
 .cat-list .soon em { font-size:11px; font-style:normal; padding:1px 6px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
@@ -91,6 +88,8 @@ img { max-width:100%; height:auto; display:block; }
 
 /* 카드 정보 라인 (공통) */
 .meta-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.meta-row .cat { margin-bottom:0 !important; }
+.meta-row .series-tag { display:inline-flex; align-items:center; line-height:1; }
 .series-tag { font-size:11px; font-weight:600; }
 .foot { font-size:12px; color:var(--muted-foreground); display:flex; gap:6px; align-items:center; }
 .hero-card .foot { margin-top:2px; }
