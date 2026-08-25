@@ -22,24 +22,12 @@ const canonical = d.canonicalUrl ?? url
 
 const cColor = catColor(d.category)
 const cBg = catBg(d.category)
-const originUrl = d.categoryUrl ?? catUrl(d.category)
+const originUrl = d.categoryUrl ?? catUrl(d.category)   // 별별선생 후기 페이지(전환 목적)
+const categoryPage = catHref(d.category)                // 블로그 카테고리 페이지(탐색 목적)
 const minutes = readingMinutes(post.body ?? '')
 
-// 목차 추출 + 본문에 id 주입
-const { toc, html: bodyWithIds } = buildToc(post.body ?? '')
-
-// 본문 중간 CTA 삽입 위치: 대략 중간 지점의 </section> 뒤. 없으면 미삽입.
-function injectMidCta(html: string): string {
-  const marker = '</section>'
-  const idxs: number[] = []
-  let from = 0
-  while (true) { const i = html.indexOf(marker, from); if (i === -1) break; idxs.push(i + marker.length); from = i + marker.length }
-  if (idxs.length < 2) return html
-  const mid = idxs[Math.floor(idxs.length / 2)]
-  const cta = `<div class="mid-cta" style="border-color:${cColor}"><span>${d.category} 관련 강의·후기가 궁금하다면?</span><a href="${originUrl}" target="_blank" rel="noopener" style="background:${cColor}">별별선생에서 확인 →</a></div>`
-  return html.slice(0, mid) + cta + html.slice(mid)
-}
-const finalBody = injectMidCta(bodyWithIds)
+// 목차 추출 + 본문에 id 주입 (중간 CTA는 넣지 않음 — 흐름 유지)
+const { toc, html: finalBody } = buildToc(post.body ?? '')
 
 // 시리즈 내비(같은 시리즈, order 순)
 let seriesPrev = null, seriesNext = null, seriesAll: any[] = []
@@ -59,9 +47,19 @@ const others = posts.filter((p) => p.slug !== post.slug && p.data.category !== d
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
 const related = [...sameCat, ...others].slice(0, 3)
 
-const ctaText = d.category === '유치원'
-  ? { strong: '우리 동네 진짜 유치원·어린이집 후기가 궁금하다면?', span: '별별선생에서 실제 학부모 후기를 확인해 보세요.' }
-  : { strong: `${d.category} 강사, 어디서 배울지 고민된다면?`, span: '별별선생에서 실제 수강 후기를 확인해 보세요.' }
+// 카테고리별 CTA 문구(전환 목적 — 별별선생 후기로 유도). 자연스러운 문장으로.
+const CTA_COPY: Record<string, { strong: string; span: string }> = {
+  '유치원':      { strong: '우리 동네 유치원·어린이집, 어디가 좋을까요?', span: '별별선생에서 실제 학부모 후기를 확인해 보세요.' },
+  '공무원':      { strong: '어떤 공무원 강의가 나에게 맞을까요?', span: '별별선생에서 실제 수강생 후기를 비교해 보세요.' },
+  '영어':        { strong: '영어 강의, 후기 보고 고르고 싶다면', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' },
+  '수능/내신':   { strong: '수능·내신 인강, 후기부터 확인하세요', span: '별별선생에서 실제 수강생 후기를 비교해 보세요.' },
+  '취업/자격증': { strong: '자격증·취업 강의, 후기로 검증하세요', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' },
+  '외국어':      { strong: '외국어 강의, 후기 보고 결정하세요', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' },
+  '대학원/편입': { strong: '편입·대학원 준비, 후기부터 살펴보세요', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' },
+  '임용/기타고시':{ strong: '임용·고시 강의, 후기로 비교하세요', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' },
+  '교수':        { strong: '들을 만한 강의인지 궁금하다면', span: '별별선생에서 실제 수강생 강의평을 확인해 보세요.' },
+}
+const ctaText = CTA_COPY[d.category] ?? { strong: '어떤 강의가 좋을지 고민된다면', span: '별별선생에서 실제 수강생 후기를 확인해 보세요.' }
 
 const blogPosting = {
   '@context': 'https://schema.org', '@type': 'BlogPosting',
@@ -144,8 +142,8 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
       </div>
 
       <div class="origin-link">
-        <span>이 글이 속한 <strong style={`color:${cColor}`}>{d.category}</strong> 게시판에서 더 많은 글을 볼 수 있어요.</span>
-        <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>원본 게시판 가기 →</a>
+        <span><strong style={`color:${cColor}`}>{d.category}</strong> 카테고리의 다른 글도 이어서 읽어보세요.</span>
+        <a href={categoryPage} style={`color:${cColor}`}>더 많은 글 보러가기 →</a>
       </div>
 
       {related.length > 0 && (
@@ -204,8 +202,6 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
     .toc nav a:hover, .toc nav a.active { color:var(--primary); text-decoration:none; font-weight:600; }
     @media (max-width:900px){ .post-grid { grid-template-columns:1fr; gap:0; } .toc { display:none; } }
 
-    .mid-cta { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin:32px 0; padding:18px 20px; border:1px dashed; border-radius:var(--radius-xl); font-size:15px; font-weight:600; }
-    .mid-cta a { color:#fff; font-size:14px; font-weight:700; padding:10px 18px; border-radius:999px; white-space:nowrap; }
 
     /* ===== 하단 존: 시리즈 블록 기준의 넓은 폭으로 통일 ===== */
     .post-foot { max-width:var(--post-wide); margin:0 auto; padding-inline:var(--post-pad); }
