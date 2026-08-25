@@ -38,34 +38,51 @@ const topTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
           </div>
         </div>
       )}
-      <div class="filter-row sort-row">
-        <span class="flabel">정렬</span>
-        <select id="sort" aria-label="정렬">
-          <option value="new">최신순</option>
-          <option value="old">오래된순</option>
-        </select>
+    </div>
+
+    <!-- 좌측 텍스트 & 우측 탭 정렬 헤더 -->
+    <div class="list-header">
+      <p id="status" class="search-status"></p>
+      <div class="sort-tabs" id="sortTabs">
+        <button type="button" class="sort-btn active" data-val="new">최신순</button>
+        <span class="divider">|</span>
+        <button type="button" class="sort-btn" data-val="old">오래된순</button>
       </div>
     </div>
 
-    <p id="status" class="search-status"></p>
     <div id="results" class="search-results"></div>
+    
+    <!-- 더보기 버튼 -->
+    <div id="pagination" class="pagination" style="display: none;">
+      <button type="button" id="btnLoadMore" class="btn-load-more">더보기 (<span id="moreCount">0</span>)</button>
+    </div>
   </div>
 
   <style>
     .search-box input { width:100%; font-size:16px; padding:14px 18px; border:1px solid var(--border); border-radius:999px; outline:none; background:var(--muted); }
     .search-box input:focus { box-shadow:0 0 0 3px color-mix(in oklch, var(--primary) 25%, transparent); background:var(--background); }
-    .filter-block { margin:16px 0 6px; display:flex; flex-direction:column; gap:10px; }
+    .filter-block { margin:16px 0 24px; display:flex; flex-direction:column; gap:10px; }
     .filter-row { display:flex; align-items:flex-start; gap:12px; }
     .flabel { flex-shrink:0; width:56px; font-size:13px; font-weight:600; color:var(--muted-foreground); padding-top:6px; }
     .chips { display:flex; flex-wrap:wrap; gap:8px; }
     .chip-btn { font-size:13px; padding:6px 12px; border-radius:999px; border:1px solid var(--border); background:var(--background); color:var(--muted-foreground); cursor:pointer; }
     .chip-btn:hover, .chip-btn.active { background:var(--secondary); color:var(--primary); border-color:transparent; }
     .chip-btn.tag.active { background:#eef; }
-    .sort-row select { font-size:13px; padding:6px 10px; border:1px solid var(--border); border-radius:8px; background:var(--background); }
-    .search-status { font-size:13px; color:var(--muted-foreground); margin:16px 0; }
     
-    /* 기존 sr-item 관련 구버전 스타일은 삭제하고 global.css에 위임 */
-    .search-item .cat { display:inline-block; font-size:11px; font-weight:500; padding:2px 8px; border-radius:var(--radius-md); margin-bottom:6px; }
+    /* 리스트 헤더 및 정렬 탭 디자인 */
+    .list-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+    .search-status { font-size:13px; color:var(--muted-foreground); margin:0; }
+    .sort-tabs { display:flex; align-items:center; gap:8px; }
+    .sort-btn { font-size:13px; color:var(--muted-foreground); background:none; border:none; padding:0; cursor:pointer; }
+    .sort-btn:hover { color:var(--foreground); }
+    .sort-btn.active { font-weight:700; color:var(--foreground); }
+    .divider { font-size:10px; color:var(--border); }
+    
+    /* 더보기 버튼 디자인 */
+    .pagination { display:flex; justify-content:center; margin-top:32px; }
+    .btn-load-more { padding:10px 24px; border:1px solid var(--border); border-radius:999px; background:var(--background); font-size:14px; font-weight:500; cursor:pointer; transition:background 0.2s; }
+    .btn-load-more:hover { background:var(--muted); }
+    
     @media (max-width:480px){ .flabel{ width:44px; } }
   </style>
 
@@ -77,17 +94,27 @@ const topTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
       '취업/자격증': ['#059669', '#e3f6ee'],
     }
     const cc = (c) => (COLORS[c] || ['#6d28d9', '#f0ebfb'])
+    
     const q = document.getElementById('q')
     const results = document.getElementById('results')
     const status = document.getElementById('status')
     const catChips = document.getElementById('catChips')
     const tagChips = document.getElementById('tagChips')
-    const sortSel = document.getElementById('sort')
-    let data = [], activeCat = '', activeTag = '', sortMode = 'new'
+    const sortTabs = document.getElementById('sortTabs')
+    const pagination = document.getElementById('pagination')
+    const btnLoadMore = document.getElementById('btnLoadMore')
+    const moreCount = document.getElementById('moreCount')
+    
+    let data = [], currentList = []
+    let activeCat = '', activeTag = '', sortMode = 'new'
+    let page = 1
+    const ITEMS_PER_PAGE = 10 // 한 번에 보여줄 글 개수
 
-    fetch(`${base}/search.json`).then((r) => r.json()).then((d) => { data = d; render() })
+    fetch(`${base}/search.json`).then((r) => r.json()).then((d) => { data = d; render(true) })
 
-    function render() {
+    function render(resetPage = true) {
+      if (resetPage) page = 1
+
       const term = (q.value || '').trim().toLowerCase()
       let list = data.slice()
       if (activeCat) list = list.filter((p) => p.category === activeCat)
@@ -95,14 +122,21 @@ const topTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
       if (term) list = list.filter((p) =>
         (p.title + ' ' + p.description + ' ' + p.category + ' ' + (p.tags||[]).join(' ') + ' ' + (p.series||'')).toLowerCase().includes(term))
       list.sort((a, b) => sortMode === 'new' ? b.date.localeCompare(a.date) : a.date.localeCompare(b.date))
+      
+      currentList = list
 
       const filtered = term || activeCat || activeTag
       status.textContent = filtered
         ? `${list.length}개의 글을 찾았습니다.`
         : `전체 ${list.length}개의 글`
       
-      // 구버전 sr-item 대신 새롭게 구성된 search-item 마크업으로 교체
-      results.innerHTML = list.map((p) => {
+      renderList(resetPage)
+    }
+
+    function renderList(resetPage) {
+      const displayList = currentList.slice(0, page * ITEMS_PER_PAGE)
+      
+      results.innerHTML = displayList.map((p) => {
         const [fg, bg] = cc(p.category)
         return `
         <a class="search-item" href="${base}/${p.slug}/">
@@ -110,27 +144,52 @@ const topTags = [...tagCount.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
             <img src="${p.heroImage}" alt="" loading="lazy">
           </div>
           <div class="body">
-            <span class="cat" style="color:${fg};background:${bg}; align-self:flex-start; display:inline-block; margin-bottom:6px;">${p.category}</span>
+            <span class="cat" style="color:${fg}; background:${bg}; align-self:flex-start; display:inline-block; font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; margin-bottom:6px;">${p.category}</span>
             <h3>${p.title}</h3>
             <p class="summary">${p.description}</p>
             <div class="foot"><time>${p.date}</time><span>·</span><span>${p.minutes}분 읽기</span></div>
           </div>
-        </a>`}).join('') || `<div class="search-status empty">조건에 맞는 글이 없습니다. 다른 키워드나 카테고리를 시도해 보세요.</div>`
+        </a>`}).join('') || `<div class="search-status empty" style="text-align:center; padding:40px;">조건에 맞는 글이 없습니다. 다른 키워드나 카테고리를 시도해 보세요.</div>`
+      
+      // 남은 아이템 계산 및 더보기 버튼 표시 여부
+      const remaining = currentList.length - displayList.length
+      if (remaining > 0) {
+        pagination.style.display = 'flex'
+        moreCount.textContent = remaining
+      } else {
+        pagination.style.display = 'none'
+      }
     }
 
-    q.addEventListener('input', render)
-    sortSel.addEventListener('change', () => { sortMode = sortSel.value; render() })
+    // 더보기 버튼 클릭 이벤트
+    btnLoadMore.addEventListener('click', () => {
+      page++
+      renderList(false)
+    })
+
+    // 정렬 탭 클릭 이벤트 (드롭다운 -> 탭으로 변경)
+    sortTabs.addEventListener('click', (e) => {
+      const btn = e.target.closest('.sort-btn')
+      if (!btn) return
+      sortMode = btn.dataset.val
+      ;[...sortTabs.querySelectorAll('.sort-btn')].forEach(b => b.classList.toggle('active', b.dataset.val === sortMode))
+      render(true)
+    })
+
+    q.addEventListener('input', () => render(true))
+    
     catChips.addEventListener('click', (e) => {
       const btn = e.target.closest('.chip-btn'); if (!btn) return
       const c = btn.dataset.cat; activeCat = activeCat === c ? '' : c
       ;[...catChips.children].forEach((b) => b.classList.toggle('active', b.dataset.cat === activeCat))
-      render()
+      render(true)
     })
+    
     if (tagChips) tagChips.addEventListener('click', (e) => {
       const btn = e.target.closest('.chip-btn'); if (!btn) return
       const t = btn.dataset.tag; activeTag = activeTag === t ? '' : t
       ;[...tagChips.children].forEach((b) => b.classList.toggle('active', b.dataset.tag === activeTag))
-      render()
+      render(true)
     })
 
     const usp = new URLSearchParams(location.search)
