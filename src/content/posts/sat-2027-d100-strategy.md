@@ -6,6 +6,10 @@ publishedAt: 2026-08-24
 heroImage: https://cdn.starteacher.co.kr/board/content/6ecc1a36a4e0a3bdb524291bfb28aec1d15405aa74f680587ec3dcc87dbe8cde299e44535261f9dde84a9c0f7a7f612f27772a479a0cea1ad643f82f4540112c
 heroImageAlt: 수능 D-100 학습 전략 이미지
 canonicalUrl: https://www.starteacher.co.kr/blog/sat-2027-d100-strategy
+tags: ["수능", "학습전략", "오답노트", "생활리듬"]
+series:
+  name: "수능 D-100 준비"
+  order: 1
 faq:
   - q: "수능 D-100에는 무엇부터 공부해야 하나요?"
     a: "6월 모의평가와 최근 문제풀이 기록을 확인해 오답 원인을 개념 부족·실수·시간 부족으로 구분하고, 반복적으로 틀리는 단원과 유형을 우선 보완하세요."

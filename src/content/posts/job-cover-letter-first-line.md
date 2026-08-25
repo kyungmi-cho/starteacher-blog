@@ -6,6 +6,7 @@ publishedAt: 2026-08-22
 heroImage: https://cdn.starteacher.co.kr/board/content/f958b2d6601288f2fa72d45ac9324ae474f3e65e35a5bf2cb92cddb8c4039f20ee9197c364b2e0842b8c602b06f59a5d
 heroImageAlt: 자기소개서 작성 이미지
 canonicalUrl: https://www.starteacher.co.kr/blog/job-cover-letter-first-line
+tags: ["자기소개서", "취업", "하반기공채", "글쓰기"]
 faq:
   - q: "자소서 첫 문장이 안 써져요. 어떻게 시작해야 하나요?"
     a: "멋진 수식어나 각오 대신 '내가 실제로 한 일과 그 결과'를 구체적 사실로 여는 것이 가장 잘 읽힙니다. 언제·무엇을·어떻게 했는지를 첫 줄에 담아 보세요."

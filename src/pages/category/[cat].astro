@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { catColor, catBg, catUrl, catSlug, slugToCat, CATEGORIES } from '../../lib/categories'
+import { fmtDate, defaultThumb, readingMinutes } from '../../lib/blog'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft)
+  const cats = new Set(posts.map((p) => p.data.category))
+  for (const c of Object.keys(CATEGORIES)) cats.add(c)
+  return [...cats].map((cat) => ({
+    params: { cat: catSlug(cat) },
+    props: { cat, posts: posts.filter((p) => p.data.category === cat) },
+  }))
+}
+
+const { cat, posts } = Astro.props
+const list = posts.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+
+const BASE = import.meta.env.BASE_URL
+const postHref = (slug: string) => `${BASE}${slug}/`
+
+const color = catColor(cat)
+const bg = catBg(cat)
+const originUrl = catUrl(cat)
+
+// 시리즈 묶기(이 카테고리 안에서)
+const seriesMap = new Map<string, number>()
+for (const p of list) if (p.data.series) seriesMap.set(p.data.series.name, (seriesMap.get(p.data.series.name) ?? 0) + 1)
+const seriesList = [...seriesMap.entries()]
+---
+<BaseLayout
+  title={`${cat} - 별별정보`}
+  description={`별별선생이 모은 ${cat} 교육·입시·자격 정보. 최신 글을 한곳에서 확인하세요.`}
+>
+  <div class="container cat-page">
+    <nav class="crumb"><a href={BASE}>별별정보</a> <span>›</span> <span style={`color:${color}`}>{cat}</span></nav>
+
+    <header class="cat-hero" style={`background:${bg}`}>
+      <div>
+        <span class="cat-badge" style={`color:${color};background:#fff`}>{cat}</span>
+        <h1 style={`color:${color}`}>{cat} 정보 모음</h1>
+        <p>별별선생이 정리한 {cat} 관련 글 {list.length}편. 최신순으로 확인하세요.</p>
+      </div>
+      <a class="cat-origin" href={originUrl} target="_blank" rel="noopener" style={`color:${color}`}>별별선생 {cat} 후기 보기 →</a>
+    </header>
+
+    {seriesList.length > 0 && (
+      <section class="cat-series">
+        <h2>이 카테고리의 시리즈</h2>
+        <div class="chips">
+          {seriesList.map(([name, n]) => (
+            <span class="series-chip" style={`border-color:${color};color:${color}`}>{name} · {n}편</span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {list.length === 0 ? (
+      <div class="empty">
+        <strong>{cat}</strong> 카테고리는 지금 <em>준비 중</em>입니다.<br />
+        곧 새로운 글로 찾아뵐게요. 다른 카테고리 글을 먼저 둘러보시겠어요?
+        <div style="margin-top:16px;"><a class="btn-primary" href={BASE}>전체 글 보기</a></div>
+      </div>
+    ) : (
+      <div class="cat-list">
+        {list.map((p) => {
+          const thumb = p.data.heroImage || defaultThumb(p.data.category)
+          const mins = readingMinutes(p.body ?? '')
+          return (
+            <article class="list-item">
+              <a href={postHref(p.slug)}><img class="thumb" src={thumb} alt={p.data.heroImageAlt} loading="lazy" /></a>
+              <div class="body">
+                <div class="meta-row">
+                  <span class="cat" style={`color:${color};background:${bg}`}>{cat}</span>
+                  {p.data.series && <span class="series-tag" style={`color:${color}`}>{p.data.series.name}</span>}
+                </div>
+                <h3><a href={postHref(p.slug)}>{p.data.title}</a></h3>
+                <p>{p.data.description}</p>
+                <div class="foot"><time>{fmtDate(p.data.publishedAt)}</time><span>·</span><span>{mins}분 읽기</span></div>
+              </div>
+            </article>
+          )
+        })}
+      </div>
+    )}
+  </div>
+
+  <style>
+    .cat-page { padding-block: 24px 56px; max-width: 900px; }
+    .crumb { font-size: 13px; color: var(--muted-foreground); margin-bottom: 16px; }
+    .crumb a:hover { color: var(--primary); }
+    .crumb span { margin: 0 4px; }
+    .cat-hero { border-radius: var(--radius-2xl); padding: 28px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .cat-hero .cat-badge { display:inline-block; font-size:12px; font-weight:600; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+    .cat-hero h1 { margin: 0 0 6px; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+    .cat-hero p { margin: 0; font-size: 14px; color: var(--foreground); opacity: .75; }
+    .cat-origin { flex-shrink: 0; font-weight: 700; font-size: 14px; background:#fff; padding:12px 18px; border-radius:999px; }
+    .cat-series { margin-bottom: 24px; }
+    .cat-series h2 { font-size: 15px; font-weight: 700; margin: 0 0 10px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .series-chip { font-size: 13px; padding: 6px 12px; border: 1px solid; border-radius: 999px; }
+    .cat-list { display: flex; flex-direction: column; }
+    .cat-list .list-item { display: grid; grid-template-columns: 200px 1fr; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .cat-list .list-item:first-child { padding-top: 0; }
+    .cat-list .thumb { aspect-ratio: 4/3; width: 100%; object-fit: cover; border-radius: var(--radius-lg); background: var(--muted); }
+    .cat-list .meta-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .cat-list .cat { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius-md); }
+    .cat-list .series-tag { font-size: 11px; font-weight: 600; }
+    .cat-list h3 { font-size: 17px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+    .cat-list h3 a:hover { color: var(--primary); }
+    .cat-list p { font-size: 14px; color: var(--muted-foreground); margin: 0 0 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .cat-list .foot { font-size: 12px; color: var(--muted-foreground); display: flex; gap: 6px; }
+    .empty { border: 1px dashed var(--border); border-radius: var(--radius-xl); padding: 48px 24px; text-align: center; color: var(--muted-foreground); font-size: 15px; line-height: 1.8; }
+    .btn-primary { display: inline-block; background: var(--primary); color: var(--primary-foreground); font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 999px; }
+    @media (max-width:560px){ .cat-list .list-item { grid-template-columns: 120px 1fr; gap: 12px; } .cat-hero { padding: 20px; } }
+  </style>
+</BaseLayout>

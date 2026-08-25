@@ -6,6 +6,7 @@ publishedAt: 2026-08-23
 heroImage: https://cdn.starteacher.co.kr/board/content/a22f917f6b8ba4c5af81a6f793f37baa800c4e461b2b4f70a17ef5a82ce7fa62
 heroImageAlt: 공무원 직렬 선택 학습 이미지
 canonicalUrl: https://www.starteacher.co.kr/blog/gong-jikryeol-select
+tags: ["공무원", "직렬선택", "9급", "시험과목"]
 faq:
   - q: "공무원 직렬, 어떻게 골라야 하나요?"
     a: "선발 규모·시험 과목·본인 적성 세 축을 함께 보고 좁히는 것이 안전합니다. 선발인원·경쟁률·합격선은 인사혁신처·지자체의 해당 연도 공고에서 확인하세요."

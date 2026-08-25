@@ -7,6 +7,7 @@ publishedAt: 2026-08-20
 heroImage: https://cdn.starteacher.co.kr/board/content/ac5e20aacd732168ea964fc5935a46681c72afdac341ffacfd62728c801698f31b70a3a7017f68e52c6b77724d4c1b1d
 heroImageAlt: 유보통합포털 홈페이지 화면
 canonicalUrl: https://www.starteacher.co.kr/blog/2027-kinder-visit-checklist
+tags: ["유치원", "어린이집", "유보통합", "입학준비"]
 faq:
   - q: "정부 지원을 제외하고 학부모가 매달 실제로 부담하는 비용은 평균 얼마인가요?"
     a: "특별활동비, 현장학습비, 교재·교구비, 차량비 등 추가 부담 항목은 기관별로 다르므로 월평균 실제 부담액과 결제 주기를 상담에서 확인하세요."

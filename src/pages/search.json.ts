@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content'
+import { readingMinutes, defaultThumb } from '../lib/blog'
 
-// 클라이언트 검색용 인덱스(JSON). 본문 제외, 제목·요약·카테고리만.
+// 클라이언트 검색용 인덱스(JSON). 제목·요약·카테고리·태그로 검색.
 export async function GET() {
   const posts = await getCollection('posts', ({ data }) => !data.draft)
   const index = posts
@@ -10,8 +11,11 @@ export async function GET() {
       title: p.data.title,
       description: p.data.description,
       category: p.data.category,
+      tags: p.data.tags ?? [],
+      series: p.data.series?.name ?? '',
       date: `${p.data.publishedAt.getFullYear()}.${String(p.data.publishedAt.getMonth() + 1).padStart(2, '0')}.${String(p.data.publishedAt.getDate()).padStart(2, '0')}`,
-      heroImage: p.data.heroImage ?? '',
+      minutes: readingMinutes(p.body ?? ''),
+      heroImage: p.data.heroImage || defaultThumb(p.data.category),
     }))
   return new Response(JSON.stringify(index), {
     headers: { 'Content-Type': 'application/json' },

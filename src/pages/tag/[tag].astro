@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { catColor, catBg } from '../../lib/categories'
+import { fmtDate, defaultThumb, readingMinutes } from '../../lib/blog'
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft)
+  const tags = new Set<string>()
+  for (const p of posts) for (const t of p.data.tags ?? []) tags.add(t)
+  return [...tags].map((tag) => ({
+    params: { tag },
+    props: { tag, posts: posts.filter((p) => (p.data.tags ?? []).includes(tag)) },
+  }))
+}
+
+const { tag, posts } = Astro.props
+const list = posts.sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
+const BASE = import.meta.env.BASE_URL
+const postHref = (slug: string) => `${BASE}${slug}/`
+---
+<BaseLayout title={`#${tag} - 별별정보`} description={`'${tag}' 태그가 붙은 별별정보 글 모음.`}>
+  <div class="container tag-page">
+    <nav class="crumb"><a href={BASE}>별별정보</a> <span>›</span> <span>#{tag}</span></nav>
+    <h1>#{tag}</h1>
+    <p class="sub">이 태그가 붙은 글 {list.length}편</p>
+
+    <div class="tag-list">
+      {list.map((p) => {
+        const thumb = p.data.heroImage || defaultThumb(p.data.category)
+        const mins = readingMinutes(p.body ?? '')
+        return (
+          <article class="list-item">
+            <a href={postHref(p.slug)}><img class="thumb" src={thumb} alt={p.data.heroImageAlt} loading="lazy" /></a>
+            <div class="body">
+              <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
+              <h3><a href={postHref(p.slug)}>{p.data.title}</a></h3>
+              <p>{p.data.description}</p>
+              <div class="foot"><time>{fmtDate(p.data.publishedAt)}</time><span>·</span><span>{mins}분 읽기</span></div>
+            </div>
+          </article>
+        )
+      })}
+    </div>
+  </div>
+
+  <style>
+    .tag-page { padding-block: 24px 56px; max-width: 900px; }
+    .crumb { font-size: 13px; color: var(--muted-foreground); margin-bottom: 16px; }
+    .crumb a:hover { color: var(--primary); } .crumb span { margin: 0 4px; }
+    .tag-page h1 { font-size: 26px; font-weight: 800; margin: 0 0 4px; }
+    .tag-page .sub { font-size: 14px; color: var(--muted-foreground); margin: 0 0 24px; }
+    .tag-list { display: flex; flex-direction: column; }
+    .tag-list .list-item { display: grid; grid-template-columns: 200px 1fr; gap: 18px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+    .tag-list .list-item:first-child { padding-top: 0; }
+    .tag-list .thumb { aspect-ratio: 4/3; width: 100%; object-fit: cover; border-radius: var(--radius-lg); }
+    .tag-list .cat { display:inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: var(--radius-md); margin-bottom: 8px; }
+    .tag-list h3 { font-size: 17px; font-weight: 600; line-height: 1.4; margin: 0 0 8px; }
+    .tag-list h3 a:hover { color: var(--primary); }
+    .tag-list p { font-size: 14px; color: var(--muted-foreground); margin: 0 0 8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .tag-list .foot { font-size: 12px; color: var(--muted-foreground); display: flex; gap: 6px; }
+    @media (max-width:560px){ .tag-list .list-item { grid-template-columns: 120px 1fr; gap: 12px; } }
+  </style>
+</BaseLayout>

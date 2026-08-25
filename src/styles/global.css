@@ -188,3 +188,38 @@ a:focus-visible, button:focus-visible { outline:2px solid var(--primary); outlin
 .related-card .b { padding:12px; }
 .related-card .cat { font-size:11px; color:var(--primary); font-weight:500; }
 .related-card h3 { font-size:14px; font-weight:600; line-height:1.4; margin:4px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* ===== v4: 목록 카드 정보라인 / 사이드바 보강 ===== */
+.sidebar .home { display:block; text-decoration:none; }
+.sidebar .home:hover { color:var(--primary); }
+.cat-list li a { align-items:center; }
+.cat-list .dot { width:8px; height:8px; border-radius:999px; flex-shrink:0; margin-right:2px; }
+.cat-list .name { flex:1; }
+.cat-list .soon { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:9px 10px; border-radius:var(--radius-md); font-size:14px; color:color-mix(in oklch,var(--muted-foreground) 80%,transparent); }
+.cat-list .soon:hover { background:var(--muted); }
+.cat-list .soon em { font-size:11px; font-style:normal; padding:1px 6px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
+
+.side-tags { margin-top:20px; }
+.side-tags .side-h { font-size:13px; font-weight:700; margin-bottom:10px; }
+.tag-cloud { display:flex; flex-wrap:wrap; gap:6px; }
+.tag-cloud a { font-size:12px; padding:4px 10px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
+.tag-cloud a:hover { background:var(--secondary); color:var(--primary); text-decoration:none; }
+
+/* 섹션 헤더 + 더보기 */
+.sec-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:16px; }
+.sec-head .sec-title { margin:0; }
+.sec-more { font-size:13px; font-weight:600; color:var(--primary); }
+.sec-more:hover { text-decoration:none; }
+.section .sec-title { font-size:20px; font-weight:700; letter-spacing:-0.3px; margin:0 0 16px; }
+
+/* 카드 정보 라인(카테고리+시리즈, 날짜+읽는시간) */
+.meta-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.series-tag { font-size:11px; font-weight:600; }
+.foot { font-size:12px; color:var(--muted-foreground); display:flex; gap:6px; align-items:center; }
+.hero-card .foot { margin-top:2px; }
+.reco-card .foot { margin-top:4px; }
+
+.post-rows { display:flex; flex-direction:column; }
+
+/* hero/reco/list 기본 썸네일이 SVG data URI라도 자연스럽게 */
+.hero-card .thumb, .reco-card .thumb, .list-item .thumb, .related-card .thumb { background:var(--muted); }

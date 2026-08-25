@@ -15,6 +15,10 @@ const posts = defineCollection({
     heroImageAlt: z.string().default(''), // 대표 이미지 대체텍스트
     canonicalUrl: z.string().url().optional(), // 정식 URL(비우면 자동=이 블로그 주소)
     draft: z.boolean().default(false),    // true면 목록/배포에서 제외
+    // 시리즈(연재) — 같은 name끼리 묶이고 order로 정렬. 없으면 일반 글.
+    series: z.object({ name: z.string(), order: z.number().default(0) }).optional(),
+    // 태그 — 카테고리보다 얇은 교차 탐색용. 예: ["수능", "국어", "오답노트"]
+    tags: z.array(z.string()).default([]),
     // FAQ 구조화데이터용(선택). 비워도 됩니다.
     faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
   }),

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css'
+import { catSlug } from '../lib/categories'
 
 // 모든 페이지가 공유하는 껍데기(head + 헤더/푸터).
 const {
@@ -13,7 +14,8 @@ const {
 
 const siteName = '별별선생'
 const base = import.meta.env.BASE_URL
-const searchHref = (cat?: string) => cat ? `${base}search/?cat=${encodeURIComponent(cat)}` : `${base}search/`
+const catHref = (cat: string) => `${base}category/${catSlug(cat)}/`
+const searchHref = () => `${base}search/`
 const canonicalURL = canonical ?? new URL(Astro.url.pathname, Astro.site).href
 const jsonLdList = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
 ---
@@ -64,11 +66,11 @@ const jsonLdList = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []
           <span>별별선생</span>
         </a>
         <nav class="header-nav" aria-label="카테고리">
-          <a href={searchHref('공무원')}>공무원</a>
-          <a href={searchHref('영어')}>영어</a>
-          <a href={searchHref('유치원')}>유치원</a>
-          <a href={searchHref('수능/내신')}>수능/내신</a>
-          <a href={searchHref('취업/자격증')}>취업/자격증</a>
+          <a href={catHref('공무원')}>공무원</a>
+          <a href={catHref('영어')}>영어</a>
+          <a href={catHref('유치원')}>유치원</a>
+          <a href={catHref('수능/내신')}>수능/내신</a>
+          <a href={catHref('취업/자격증')}>취업/자격증</a>
         </nav>
         <span class="header-tag">별별정보</span>
         <a class="header-search" href={searchHref()} aria-label="블로그 내 검색">⌕</a>

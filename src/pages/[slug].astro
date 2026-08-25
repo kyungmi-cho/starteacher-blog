@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import { catColor, catBg, catUrl } from '../lib/categories'
+import { catColor, catBg, catUrl, catSlug } from '../lib/categories'
+import { fmtDate, defaultThumb, readingMinutes, buildToc } from '../lib/blog'
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft)
@@ -9,27 +10,52 @@ export async function getStaticPaths() {
 }
 
 const { post, posts } = Astro.props
-const { Content } = await post.render()
 const d = post.data
 
 const BASE = import.meta.env.BASE_URL
 const postHref = (slug: string) => `${BASE}${slug}/`
+const catHref = (cat: string) => `${BASE}category/${catSlug(cat)}/`
+const tagHref = (t: string) => `${BASE}tag/${encodeURIComponent(t)}/`
+
 const url = new URL(postHref(post.slug), Astro.site).href
 const canonical = d.canonicalUrl ?? url
-const fmt = (x: Date) =>
-  `${x.getFullYear()}.${String(x.getMonth() + 1).padStart(2, '0')}.${String(x.getDate()).padStart(2, '0')}`
 
-// 카테고리 고정 색상 + 원본 게시판 URL
 const cColor = catColor(d.category)
 const cBg = catBg(d.category)
 const originUrl = d.categoryUrl ?? catUrl(d.category)
+const minutes = readingMinutes(post.body ?? '')
 
-// 관련 글: 같은 카테고리, 본인 제외, 최신순 3개. 부족하면 다른 글로 보충.
-const sameCat = posts
-  .filter((p) => p.slug !== post.slug && p.data.category === d.category)
+// 목차 추출 + 본문에 id 주입
+const { toc, html: bodyWithIds } = buildToc(post.body ?? '')
+
+// 본문 중간 CTA 삽입 위치: 대략 중간 지점의 </section> 뒤. 없으면 미삽입.
+function injectMidCta(html: string): string {
+  const marker = '</section>'
+  const idxs: number[] = []
+  let from = 0
+  while (true) { const i = html.indexOf(marker, from); if (i === -1) break; idxs.push(i + marker.length); from = i + marker.length }
+  if (idxs.length < 2) return html
+  const mid = idxs[Math.floor(idxs.length / 2)]
+  const cta = `<div class="mid-cta" style="border-color:${cColor}"><span>${d.category} 관련 강의·후기가 궁금하다면?</span><a href="${originUrl}" target="_blank" rel="noopener" style="background:${cColor}">별별선생에서 확인 →</a></div>`
+  return html.slice(0, mid) + cta + html.slice(mid)
+}
+const finalBody = injectMidCta(bodyWithIds)
+
+// 시리즈 내비(같은 시리즈, order 순)
+let seriesPrev = null, seriesNext = null, seriesAll: any[] = []
+if (d.series) {
+  seriesAll = posts
+    .filter((p) => p.data.series && p.data.series.name === d.series!.name)
+    .sort((a, b) => (a.data.series!.order) - (b.data.series!.order))
+  const pos = seriesAll.findIndex((p) => p.slug === post.slug)
+  seriesPrev = pos > 0 ? seriesAll[pos - 1] : null
+  seriesNext = pos < seriesAll.length - 1 ? seriesAll[pos + 1] : null
+}
+
+// 관련 글: 같은 카테고리 우선, 부족 시 보충
+const sameCat = posts.filter((p) => p.slug !== post.slug && p.data.category === d.category)
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
-const others = posts
-  .filter((p) => p.slug !== post.slug && p.data.category !== d.category)
+const others = posts.filter((p) => p.slug !== post.slug && p.data.category !== d.category)
   .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime())
 const related = [...sameCat, ...others].slice(0, 3)
 
@@ -38,53 +64,78 @@ const ctaText = d.category === '유치원'
   : { strong: `${d.category} 강사, 어디서 배울지 고민된다면?`, span: '별별선생에서 실제 수강 후기를 확인해 보세요.' }
 
 const blogPosting = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: d.title,
-  description: d.description,
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: d.title, description: d.description,
   datePublished: d.publishedAt.toISOString(),
   dateModified: (d.updatedAt ?? d.publishedAt).toISOString(),
   ...(d.heroImage ? { image: d.heroImage } : {}),
+  keywords: (d.tags ?? []).join(', '),
   mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
   author: { '@type': 'Organization', name: '별별선생' },
-  publisher: {
-    '@type': 'Organization',
-    name: '별별선생',
-    logo: { '@type': 'ImageObject', url: 'https://d27b8p6cm1t9cq.cloudfront.net/static/images/logo/logo_square_orange.png' },
-  },
+  publisher: { '@type': 'Organization', name: '별별선생', logo: { '@type': 'ImageObject', url: 'https://d27b8p6cm1t9cq.cloudfront.net/static/images/logo/logo_square_orange.png' } },
 }
 const faqPage = d.faq && d.faq.length
-  ? { '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
+  ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }
   : null
 const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
 ---
-<BaseLayout
-  title={`${d.title} - 별별선생`}
-  description={d.description}
-  canonical={canonical}
-  ogImage={d.heroImage}
-  ogType="article"
-  jsonLd={jsonLd}
->
-  <article>
+<BaseLayout title={`${d.title} - 별별선생`} description={d.description} canonical={canonical} ogImage={d.heroImage} ogType="article" jsonLd={jsonLd}>
+  <div id="progress" class="read-progress" style={`background:${cColor}`}></div>
+
+  <article class="post">
     <header class="container article-head">
-      <span class="cat" style={`color:${cColor};background:${cBg}`}>{d.category}</span>
+      <nav class="crumb"><a href={BASE}>별별정보</a> <span>›</span> <a href={catHref(d.category)} style={`color:${cColor}`}>{d.category}</a></nav>
       <h1>{d.title}</h1>
-      <div class="meta"><time datetime={d.publishedAt.toISOString()}>{fmt(d.publishedAt)}</time></div>
+      <div class="meta">
+        <time datetime={d.publishedAt.toISOString()}>{fmtDate(d.publishedAt)}</time>
+        <span>·</span><span>{minutes}분 읽기</span>
+        {d.series && <><span>·</span><span class="series-badge" style={`color:${cColor}`}>{d.series.name} 시리즈</span></>}
+      </div>
     </header>
 
-    <div class="article-body">
-      <Content />
+    <div class="container post-grid">
+      <!-- 본문 -->
+      <div class="article-body" set:html={finalBody}></div>
+
+      <!-- 목차(데스크톱 우측 고정) -->
+      {toc.length > 1 && (
+        <aside class="toc">
+          <div class="toc-title">목차</div>
+          <nav>
+            {toc.map((t) => (
+              <a href={`#${t.id}`} class={t.level === 3 ? 'lv3' : 'lv2'} data-id={t.id}>{t.text}</a>
+            ))}
+          </nav>
+        </aside>
+      )}
     </div>
 
-    <!-- 본문 하단 CTA 배너 (카테고리 고정 색상) -->
+    <!-- 태그 -->
+    {(d.tags && d.tags.length > 0) && (
+      <div class="container tag-row">
+        {d.tags.map((t) => <a href={tagHref(t)} class="tag-pill">#{t}</a>)}
+      </div>
+    )}
+
+    <!-- 시리즈 내비 -->
+    {d.series && seriesAll.length > 1 && (
+      <div class="container series-nav">
+        <div class="sn-title" style={`color:${cColor}`}>📚 {d.series.name} 시리즈</div>
+        <div class="sn-links">
+          {seriesPrev
+            ? <a href={postHref(seriesPrev.slug)}>← 이전 편<br /><strong>{seriesPrev.data.title}</strong></a>
+            : <span class="sn-empty">이 시리즈의 첫 편</span>}
+          {seriesNext
+            ? <a class="next" href={postHref(seriesNext.slug)}>다음 편 →<br /><strong>{seriesNext.data.title}</strong></a>
+            : <span class="sn-empty">이 시리즈의 마지막 편</span>}
+        </div>
+      </div>
+    )}
+
+    <!-- 하단 CTA -->
     <div class="container">
       <div class="cta-banner" style={`background:${cColor}`}>
-        <div class="txt">
-          <strong>{ctaText.strong}</strong>
-          <span>{ctaText.span}</span>
-        </div>
+        <div class="txt"><strong>{ctaText.strong}</strong><span>{ctaText.span}</span></div>
         <a href={originUrl} target="_blank" rel="noopener" style={`color:${cColor}`}>후기 확인하기 →</a>
       </div>
     </div>
@@ -102,9 +153,7 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
         <div class="related-grid">
           {related.map((p) => (
             <a class="related-card" href={postHref(p.slug)}>
-              {p.data.heroImage
-                ? <img class="thumb" src={p.data.heroImage} alt={p.data.heroImageAlt} loading="lazy" />
-                : <div class="thumb"></div>}
+              <img class="thumb" src={p.data.heroImage || defaultThumb(p.data.category)} alt={p.data.heroImageAlt} loading="lazy" />
               <div class="b">
                 <span class="cat" style={`color:${catColor(p.data.category)};background:${catBg(p.data.category)}`}>{p.data.category}</span>
                 <h3>{p.data.title}</h3>
@@ -115,4 +164,65 @@ const jsonLd = faqPage ? [blogPosting, faqPage] : [blogPosting]
       </section>
     )}
   </article>
+
+  <style>
+    .read-progress { position:fixed; top:0; left:0; height:3px; width:0; z-index:60; transition:width .1s linear; }
+    .post .crumb { font-size:13px; color:var(--muted-foreground); margin-bottom:12px; }
+    .post .crumb a:hover { text-decoration:none; } .post .crumb span { margin:0 4px; }
+    .post .article-head .meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .post .series-badge { font-weight:600; }
+    .post-grid { display:grid; grid-template-columns: minmax(0,1fr) 220px; gap:40px; align-items:start; }
+    .post-grid .article-body { max-width:none; margin:0; }
+    .toc { position:sticky; top:88px; font-size:13px; border-left:2px solid var(--border); padding-left:14px; }
+    .toc-title { font-weight:700; margin-bottom:10px; }
+    .toc nav { display:flex; flex-direction:column; gap:8px; }
+    .toc nav a { color:var(--muted-foreground); line-height:1.4; }
+    .toc nav a.lv3 { padding-left:12px; font-size:12px; }
+    .toc nav a:hover, .toc nav a.active { color:var(--primary); text-decoration:none; font-weight:600; }
+    @media (max-width:900px){ .post-grid { grid-template-columns:1fr; gap:0; } .toc { display:none; } }
+
+    .mid-cta { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin:32px 0; padding:18px 20px; border:1px dashed; border-radius:var(--radius-xl); font-size:15px; font-weight:600; }
+    .mid-cta a { color:#fff; font-size:14px; font-weight:700; padding:10px 18px; border-radius:999px; white-space:nowrap; }
+
+    .tag-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:28px; max-width:760px; }
+    .tag-pill { font-size:13px; padding:6px 12px; border-radius:999px; background:var(--muted); color:var(--muted-foreground); }
+    .tag-pill:hover { background:var(--secondary); color:var(--primary); text-decoration:none; }
+
+    .series-nav { margin-top:32px; }
+    .series-nav .sn-title { font-size:15px; font-weight:700; margin-bottom:12px; }
+    .sn-links { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .sn-links a, .sn-links .sn-empty { border:1px solid var(--border); border-radius:var(--radius-lg); padding:14px 16px; font-size:13px; color:var(--muted-foreground); line-height:1.5; }
+    .sn-links a strong { color:var(--foreground); font-size:14px; }
+    .sn-links a:hover { border-color:var(--primary); text-decoration:none; }
+    .sn-links .next { text-align:right; }
+    .sn-links .sn-empty { display:flex; align-items:center; justify-content:center; }
+    @media (max-width:560px){ .sn-links { grid-template-columns:1fr; } .sn-links .next { text-align:left; } }
+  </style>
+
+  <script>
+    // 읽기 진행바
+    const bar = document.getElementById('progress')
+    const onScroll = () => {
+      const h = document.documentElement
+      const max = h.scrollHeight - h.clientHeight
+      bar.style.width = max > 0 ? `${(h.scrollTop / max) * 100}%` : '0%'
+    }
+    document.addEventListener('scroll', onScroll, { passive: true }); onScroll()
+
+    // 목차 현재 위치 하이라이트
+    const links = [...document.querySelectorAll('.toc nav a')]
+    if (links.length) {
+      const map = new Map(links.map((a) => [a.dataset.id, a]))
+      const targets = links.map((a) => document.getElementById(a.dataset.id)).filter(Boolean)
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            links.forEach((l) => l.classList.remove('active'))
+            const a = map.get(e.target.id); if (a) a.classList.add('active')
+          }
+        })
+      }, { rootMargin: '-80px 0px -70% 0px' })
+      targets.forEach((t) => io.observe(t))
+    }
+  </script>
 </BaseLayout>
